@@ -1,0 +1,15 @@
+PUSH_SWAP:
+	setuper :
+		tout passe dans tmp sauf + grand	
+	comparator :
+		a determ : comparator sortant l'intervalle (p)
+			0 -> debut
+			n -> fin
+			p = a placer entre p -1 et p
+		(ordre croissant)
+	move_counter :
+		evaluer nb coups chaque extrem avec sa p
+	decision_maker :
+		choisir l'extrem ac - coups et effectuer action (first/last_half_moves)
+	finisher :
+		a la fin, ra ou rra selon ou se trouve + petit
