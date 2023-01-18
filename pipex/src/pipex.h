@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:01:33 by ale-sain          #+#    #+#             */
-/*   Updated: 2022/12/21 02:55:09 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/13 19:32:02 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ char	**split_env(char **env);
 char	*ft_whereis(char *cmd, char **e);
 void	*generator_cmd(t_list **lst, int ac, char **av, char **env);
 int		verif_arg(int ac);
+char	*building_path(char *cmd, char **e);
 
 //		PIPEX
 void	first(t_list *cmd, int pipefd[2], void (*cleanator)(char **),

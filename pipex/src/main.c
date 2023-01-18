@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:26:33 by ale-sain          #+#    #+#             */
-/*   Updated: 2022/12/21 02:50:56 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/13 20:10:20 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,21 @@ char	**split_env(char **env)
 
 char	*ft_whereis(char *cmd, char **e)
 {
-	int		i;
-	char	*path;
-	char	*p;
-
-	i = 0;
 	if (access (cmd, X_OK) == 0 && ft_strlen(cmd) > 10)
 		return (ft_strdup(cmd));
-	if (!e)
+	if (ft_strnstr(cmd, "/", ft_strlen(cmd)) && access (cmd, X_OK) == 0)
+		return (ft_strdup(cmd));
+	if (!e || !cmd)
 		return (NULL);
-	if (!cmd)
-		return (NULL);
-	while (e[i])
+	if (ft_strnstr(cmd, "/", ft_strlen(cmd)))
 	{
-		p = ft_strjoin(e[i], "/");
-		path = ft_strjoin(p, cmd);
-		free(p);
-		if (access (path, X_OK) == 0)
-			return (path);
-		free(path);
-		i++;
+		if (access (cmd, X_OK) == 0)
+			return (ft_strdup(cmd));
+		ft_putstr_fd(cmd, 2);
+		perror(" ");
+		return (NULL);
 	}
-	return (NULL);
+	return (building_path(cmd, e));
 }
 
 void	*generator_cmd(t_list **lst, int ac, char **av, char **env)
@@ -84,8 +77,7 @@ int	verif_arg(int ac)
 		ft_putstr_fd("\tusage: ./pipex infile cm1 cm2 outfile\n", 1);
 		return (0);
 	}
-	else
-		return (1);
+	return (1);
 }
 
 int	main(int ac, char **av, char **env)
@@ -94,10 +86,7 @@ int	main(int ac, char **av, char **env)
 	int		i;
 	t_list	*cmd;
 
-	if (ft_strnstr(av[1], "here_doc", 9) == av[1])
-		i = 2;
-	else
-		i = 1;
+	i = 1;
 	statuscode = 0;
 	cmd = NULL;
 	if (verif_arg(ac) == 0)

@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:26:33 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/09 19:45:31 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/13 20:10:16 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ char	**split_env(char **env)
 char	*ft_whereis(char *cmd, char **e)
 {
 	if (access (cmd, X_OK) == 0 && ft_strlen(cmd) > 10)
+		return (ft_strdup(cmd));
+	if (ft_strnstr(cmd, "/", ft_strlen(cmd)) && access (cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
 	if (!e || !cmd)
 		return (NULL);

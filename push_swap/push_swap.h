@@ -85,7 +85,7 @@ void		five(t_list **stack, t_list **tmp, int i);
 //      PRE SORT AND FINISHER ALGOS
 void		first_repartiter(t_list **stack, t_list**tmp, int *tab, int size);
 void		second_repartiter(t_list **stack, t_list**tmp, int *tab, int size);
-void		pre_selection(t_list **stack, t_list **tmp, int size);
+void		pre_selection(t_list **stack, t_list **tmp, int size, int n);
 void		finisher(t_list **stack);
 
 //      MAIN ALGOS

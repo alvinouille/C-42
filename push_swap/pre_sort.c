@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 11:36:13 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/12 17:06:58 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/17 09:32:54 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ void	second_repartiter(t_list **stack, t_list**tmp, int *tab, int size)
 		rb(tmp, 0);
 }
 
-void	pre_selection(t_list **stack, t_list **tmp, int size)
+void	pre_selection(t_list **stack, t_list **tmp, int size, int n)
 {
 	int	med;
-	int	n;
 	int	*tab;
 
 	tab = sorted_tab(*stack);
-	n = size * 2;
+	if (!tab)
+		return ;
 	med = mediane(tab, size);
 	while (n--)
 	{

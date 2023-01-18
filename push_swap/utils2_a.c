@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 11:35:08 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/12 17:10:49 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/17 09:19:14 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	bigger(t_list *list)
 	int	bigger;
 	int	curr;
 
-	bigger = 0;
+	bigger = -2147483648;
 	while (list)
 	{
 		curr = list->nb;

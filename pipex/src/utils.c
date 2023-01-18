@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:07:01 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/09 19:50:46 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/13 19:32:27 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	ft_putstr_fd(char *s, int fd)
 	int	i;
 
 	i = 0;
+	if (!s)
+		return ;
 	while (s[i])
 		i++;
 	write(fd, s, i);
@@ -29,7 +31,8 @@ void	ft_putstr_fd(char *s, int fd)
 
 void	ft_putendl_fd(char *s, int fd)
 {
-	ft_putstr_fd(s, fd);
+	if (s)
+		ft_putstr_fd(s, fd);
 	ft_putchar_fd('\n', fd);
 }
 

@@ -66,7 +66,8 @@ int	main(int ac, char **av)
 		five(&stack, &tmp, ac - 1);
 	else
 	{
-		pre_selection(&stack, &tmp, ft_lstsize(stack));
+		pre_selection(&stack, &tmp, ft_lstsize(stack),
+			ft_lstsize(stack) * 2);
 		size = ft_lstsize(tmp);
 		while (size)
 		{
