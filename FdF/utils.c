@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 15:34:47 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/17 16:05:19 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/17 18:25:54 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,27 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	}
 }
 
-int	ft_atoi(char nptr)
+int	ft_atoi(char *nptr)
 {
 	int		i;
 	long	nb;
-
+	int		neg;
 
 	i = 0;
 	nb = 0;
-
-    
-	nb = nb * 10 + (nptr - 48);
+	neg = 1;
+	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == ' ')
+		i++;
+	if (nptr[i] == '-' || nptr[i] == '+')
+	{
+		if (nptr[i] == '-')
+			neg = -1;
+		i++;
+	}
+	while (nptr[i] >= 48 && nptr[i] <= 57 && nptr[i])
+	{
+		nb = nb * 10 + (nptr[i] - 48);
+		i++;
+	}
 	return (nb * neg);
 }
