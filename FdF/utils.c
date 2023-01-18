@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 15:34:47 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/17 18:25:54 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/18 16:16:16 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	ft_lstclear(t_list **lst)
 {
 	t_list	*head;
 	t_list	*body;
+	t_list *boh;
 
 	if (!lst || !(*lst))
 		return ;
@@ -74,4 +75,22 @@ int	ft_atoi(char *nptr)
 		i++;
 	}
 	return (nb * neg);
+}
+
+t_list	*ft_list_at(t_list *begin_list, unsigned int nbr)
+{
+	unsigned int	i;
+	t_list			*element;
+
+	i = 0;
+	element = begin_list;
+	while (i != nbr && (element))
+	{
+		element = element->next;
+		i++;
+	}
+	if (i == nbr)
+		return (element);
+	else
+		return (0);
 }
