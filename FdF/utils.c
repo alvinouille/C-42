@@ -3,53 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/17 15:34:47 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/18 16:16:16 by ale-sain         ###   ########.fr       */
+/*   Created: 2023/01/19 08:15:38 by alvina            #+#    #+#             */
+/*   Updated: 2023/01/19 17:47:04 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_list	*ft_lstlast(t_list *lst)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	while (lst && lst->next)
-		lst = lst->next;
-	return (lst);
+	char	*str;
+	int		i;
+	int		j;
+	int		length;
+
+	i = 0;
+	j = 0;
+    if (s1)
+	    length = ft_strlen(s1) + ft_strlen(s2);
+    else
+        length = ft_strlen(s2);
+	str = (char *) malloc(sizeof(char) * length + 1);
+	if (!str)
+		return (NULL);
+	if (s1)
+    {
+        while (s1[j])
+		    str[i++] = s1[j++];
+    }
+	j = 0;
+	while (s2[j])
+		str[i++] = s2[j++];
+    if (s1)
+        free(s1);
+    if (s2)
+        free(s2);
+	str[i] = '\0';
+	return (str);
 }
 
-void	ft_lstclear(t_list **lst)
+void	img_pixel_put(t_data *img, double x, double y, int color)
 {
-	t_list	*head;
-	t_list	*body;
-	t_list *boh;
+	char	*px;
 
-	if (!lst || !(*lst))
-		return ;
-	head = (*lst);
-	while (head)
-	{
-		body = head->next;
-		free(head);
-		head = body;
-	}
-}
-
-void	ft_lstadd_back(t_list **lst, t_list *new)
-{
-	t_list	*last;
-
-	if (*lst == NULL)
-		*lst = new;
-	else
-	{
-		if (lst && new)
-		{
-			last = ft_lstlast(*lst);
-			last->next = new;
-		}
-	}
+	px = img->addr + around((y * img->line_length + x * (img->bits_per_pixel / 8)));
+	*(unsigned int*)px = color;
 }
 
 int	ft_atoi(char *nptr)
@@ -77,20 +77,24 @@ int	ft_atoi(char *nptr)
 	return (nb * neg);
 }
 
-t_list	*ft_list_at(t_list *begin_list, unsigned int nbr)
+int ft_strlen_modif(char *str)
 {
-	unsigned int	i;
-	t_list			*element;
+    int i;
+    int res;
 
-	i = 0;
-	element = begin_list;
-	while (i != nbr && (element))
-	{
-		element = element->next;
-		i++;
-	}
-	if (i == nbr)
-		return (element);
-	else
-		return (0);
+    i = 0;
+    res = 0;
+    if (!str)
+        return (0);
+    while (str[i] && str[i] != '\n')
+    {
+        if (str[i] >= '0' && str[i] <= '9')
+        {
+            res++;
+            while (str[i] >= '0' && str[i] <= '9')
+                i++;
+        }
+        i++;
+    }
+    return (res);
 }
