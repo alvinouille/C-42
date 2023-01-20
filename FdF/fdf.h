@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:15:33 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/19 17:49:13 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/20 18:36:48 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 #include "minilibx-linux/mlx_int.h"
 #include "get_next_line/get_next_line.h"
 #include <math.h>
+
+typedef struct s_needle
+{
+    double x;
+    double y;
+}   t_needle;
 
 typedef struct	s_data 
 {
@@ -40,9 +46,9 @@ typedef struct	s_vars {
 
 typedef struct s_point
 {
-    int x;
-    int y;
-    int z;
+    double x;
+    double y;
+    double z;
 }   t_point;
 
 //      UTILS
@@ -54,5 +60,7 @@ int     ft_strlen_modif(char *str);
 //      MLX
 void	img_pixel_put(t_data *img, double x, double y, int color);
 int		around(float nb);
+
+//			
 
 #endif

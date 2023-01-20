@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:15:21 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/19 20:50:32 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/20 20:00:18 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,36 +39,172 @@ int		around(float nb)
 		return ((int)floor(nb));
 }
 
-t_point		projection(t_point curr, int echelle, t_point origine, int width, int length)
+t_needle		projection(t_point curr, int echelle, t_point origine, int width, int length)
 {
-	t_point point;
-	
-	// point.x = curr.x;
-	// point.y = curr.y;
-	point.x = round((double)(curr.x - curr.y) * (sqrt(2) / 2));
-	point.y = round(((double)curr.z * (sqrt(2 / 3))) - ((double)1 / (sqrt(6)) * ((double)(curr.x + curr.y))));
-	
-	//	parallele la
-	// point.x = round((double)(curr.x - curr.z) / (sqrt(2)));
-	// point.y = round((double)(curr.x + (2 * curr.y) + curr.z) / sqrt(6));
-	// point.x = (curr.x - curr.y) * cos(0.523599);
-	// point.y = -curr.z + (curr.x + curr.y) * sin(0.523599);
+	t_needle point;
 
-	//another try
-	// point.x = ((float)curr.x * 0.5 * (float)length) + ((float)curr.y * (-0.5) * (float)width);
-	// point.y = ((float)curr.x * 0.25 * (float)length) + ((float)curr.y * 0.25 * (float)width);
-	if (curr.y >= 1)
-		point.x = (500 - (curr.y * echelle)) + (point.x * echelle);
-	else
-		point.x = 500 + (point.x * echelle);
-	if (curr.y >= 1)
-		point.y = (500 + (curr.y * echelle)) + (point.y * echelle);
-	else
-		point.y = 500 + (point.y * echelle);
+	point.x = (curr.x - curr.y) * (sqrt(2.0) / 2);
+	point.y = -(curr.z * (sqrt(2.0 / 3.0))) - (1 / (sqrt(6.0)) * -((curr.x + curr.y)));
+
+	point.x = round((origine.x + point.x) * echelle);
+	point.y = round((origine.y + point.y) * echelle);
 	return (point);
 }
 
-void    quadrillage(t_data img, int **tab, int width, int length)
+void    bresenham(t_data img, t_needle curr, t_needle next)
+{
+    int dy = next.y - curr.y;
+    int dx = next.x - curr.x;
+    int x = curr.x;
+    int y = curr.y;
+    // printf("x = %d, y = %d\n", x, y);
+    float e = 0.0;
+    float pente;
+    if (dx != 0)
+        pente = (float)dy / (float)dx;
+    else
+        pente = 0;
+    float ajust = - 1.0;
+    printf("pente = %f\n", pente);
+    if (pente >= 0)
+    {
+        //      AU DESSUS AXE ABSCISSE (X)
+        //      OCTET 2 ET 1 (A DROITE AXE ORDONNE (Y))
+        if (x < next.x)    
+        {
+            while (x <= next.x)
+            {
+                img_pixel_put(&img, x, y, 0x00FFFFFF);
+                e += pente;
+                if (e >= 0.5)
+                {
+                    y++;
+                    e += ajust;
+                }
+                x++;
+            }
+        }
+        //      SUR AXE ORDONNE
+        else if (x == next.x)
+        {
+            if (y <= next.y)
+            {
+                while (y <= next.y)
+                {
+                    img_pixel_put(&img, x, y, 0x00FFFFFF);
+                    y++;
+                }
+            }
+            else
+            {
+                while (y >= next.y)
+                {
+                    img_pixel_put(&img, x, y, 0x00FFFFFF);
+                    y--;
+                }
+            }
+        }
+        //      OCTANT 4 ET 3 (A GAUCHE AXE ORDONNE (Y))
+        else
+        {
+            while (x >= next.x)
+            {
+                img_pixel_put(&img, x, y, 0x00FFFFFF);
+                e += pente;
+                if (e >= 0.5)
+                {
+                    y--;
+                    e += ajust;
+                }
+                x--;
+            }
+        }
+    }
+    //  AU DESSOUS AXE ABSCISSE (X)
+    else
+    {
+        //      OCTANT 8 ET 7 (A DROITE AXE ORDONNE (Y))
+        if (x < next.x)
+        {
+            while (x <= next.x)
+            {
+                img_pixel_put(&img, x, y, 0x00FFFFFF);
+                e += pente;
+                if (e <= -0.5)
+                {
+                    y--;
+                    e -= ajust;
+                }
+                x++;
+            
+            }
+        }
+        //      OCTANT 6 ET 5 (A GAUCHE AXE ORDONNE (Y))
+        else
+        {
+            while (x >= next.x)
+            {
+                img_pixel_put(&img, x, y, 0x00FFFFFF);
+                e += pente;
+                if (e <= -0.5)
+                {
+                    y++;
+                    e -= ajust;
+                }
+                x--;
+                printf("x = %d, y = %d\n",x, y);
+            }
+        }
+    }
+}
+
+void    tracing(t_data img, t_needle **tab, int width, int length)
+{
+    int i = 0;
+    int j = 0;
+
+    while (j < width)
+    {
+        while (i < length -1)
+        {
+            bresenham(img, tab[j][i], tab[j][i + 1]);
+            // img_pixel_put(&img, tab[j][i].x, tab[j][i].y, 0x00FFFFFF);
+            i++;
+        }
+        i = 0;
+        j++;
+    }
+    i = 0;
+    j = 0;
+    while (i < length)
+    {
+        while (j < width -1)
+        {
+            bresenham(img, tab[j][i], tab[j + 1][i]);
+            // img_pixel_put(&img, tab[j][i].x, tab[j][i].y, 0x00FFFFFF);
+            j++;
+        }
+        j = 0;
+        i++;
+    }
+
+}
+
+t_needle **create(int length, int width)
+{
+    int i;
+
+    i = 0;
+    t_needle **tab = malloc(sizeof (t_needle *) * width);
+    while (i < width)
+    {
+        tab[i] = malloc(sizeof(t_needle) * length);
+        i++;
+    }
+    return (tab);
+}
+
+t_needle    **quadrillage(t_data img, int **tab, int width, int length)
 {
 	int x;
 	int y;
@@ -76,12 +212,15 @@ void    quadrillage(t_data img, int **tab, int width, int length)
 	t_point point;
 	t_point curr;
 	int echelle;
+	t_needle **map;
 
 	x = 0;
 	y = 0;
-	origine.x = 500;
-	origine.y = 500;
+	origine.x = 50;
+	origine.y = 50;
 	echelle = 15;
+	int i = 0;
+	map = create(length, width);
 	while (y < width)
 	{
 		while (x < length)
@@ -89,13 +228,17 @@ void    quadrillage(t_data img, int **tab, int width, int length)
 			curr.x = x;
 			curr.y = y;
 			curr.z = tab[y][x];
-			point = projection(curr, echelle, origine, length, width);
-			img_pixel_put(&img, point.x, point.y, 0x00FF0000);
+			// printf("z = %f", curr.z);
+			map[y][x] = projection(curr, echelle, origine, length, width);
+			// printf("%d eme point : x = %f, y = %f\n", i, point.x, point.y);
+			img_pixel_put(&img, point.x, point.y, 0x00FFFFFF);
 			x++;
+			i++;
 		}
 		x = 0;
 		y++;
 	}
+	return (map);
 }
 
 int closing_key(int keycode, t_vars *vars)
@@ -144,6 +287,7 @@ void	display_point(int **tab, int width, int length)
 {
 	t_vars vars;
     t_data  img;
+	t_needle **map;
 
     vars.mlx = mlx_init();
     vars.win = mlx_new_window(vars.mlx, 1920, 1080, "FdF to come");
@@ -151,7 +295,8 @@ void	display_point(int **tab, int width, int length)
 	img.img = mlx_new_image(vars.mlx, 1920, 1080);
     img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
     
-    quadrillage(img, tab, width, length);
+    map = quadrillage(img, tab, width, length);
+	tracing(img, map, width, length);
     mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
 
 	vars.img = img;
