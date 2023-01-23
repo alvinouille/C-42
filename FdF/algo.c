@@ -3,33 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   algo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:15:21 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/20 20:00:18 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/23 20:20:30 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-
-void	print(int **tab, int width, int length)
-{
-	printf("\n\n\n");
-	int x = 0;
-	int y = 0;
-	while (y < width)
-	{
-		while (x < length)
-		{
-			printf("%d ", tab[y][x]);
-			x++;
-		}
-		printf("\n");
-		x = 0;
-		y++;
-	}
-}
+# define LENGTH 1920
+# define WIDTH 1080
 
 int		around(float nb)
 {
@@ -39,7 +22,7 @@ int		around(float nb)
 		return ((int)floor(nb));
 }
 
-t_needle		projection(t_point curr, int echelle, t_point origine, int width, int length)
+t_needle		projection(t_point curr, int echelle, t_point origine)
 {
 	t_needle point;
 
@@ -49,113 +32,6 @@ t_needle		projection(t_point curr, int echelle, t_point origine, int width, int 
 	point.x = round((origine.x + point.x) * echelle);
 	point.y = round((origine.y + point.y) * echelle);
 	return (point);
-}
-
-void    bresenham(t_data img, t_needle curr, t_needle next)
-{
-    int dy = next.y - curr.y;
-    int dx = next.x - curr.x;
-    int x = curr.x;
-    int y = curr.y;
-    // printf("x = %d, y = %d\n", x, y);
-    float e = 0.0;
-    float pente;
-    if (dx != 0)
-        pente = (float)dy / (float)dx;
-    else
-        pente = 0;
-    float ajust = - 1.0;
-    printf("pente = %f\n", pente);
-    if (pente >= 0)
-    {
-        //      AU DESSUS AXE ABSCISSE (X)
-        //      OCTET 2 ET 1 (A DROITE AXE ORDONNE (Y))
-        if (x < next.x)    
-        {
-            while (x <= next.x)
-            {
-                img_pixel_put(&img, x, y, 0x00FFFFFF);
-                e += pente;
-                if (e >= 0.5)
-                {
-                    y++;
-                    e += ajust;
-                }
-                x++;
-            }
-        }
-        //      SUR AXE ORDONNE
-        else if (x == next.x)
-        {
-            if (y <= next.y)
-            {
-                while (y <= next.y)
-                {
-                    img_pixel_put(&img, x, y, 0x00FFFFFF);
-                    y++;
-                }
-            }
-            else
-            {
-                while (y >= next.y)
-                {
-                    img_pixel_put(&img, x, y, 0x00FFFFFF);
-                    y--;
-                }
-            }
-        }
-        //      OCTANT 4 ET 3 (A GAUCHE AXE ORDONNE (Y))
-        else
-        {
-            while (x >= next.x)
-            {
-                img_pixel_put(&img, x, y, 0x00FFFFFF);
-                e += pente;
-                if (e >= 0.5)
-                {
-                    y--;
-                    e += ajust;
-                }
-                x--;
-            }
-        }
-    }
-    //  AU DESSOUS AXE ABSCISSE (X)
-    else
-    {
-        //      OCTANT 8 ET 7 (A DROITE AXE ORDONNE (Y))
-        if (x < next.x)
-        {
-            while (x <= next.x)
-            {
-                img_pixel_put(&img, x, y, 0x00FFFFFF);
-                e += pente;
-                if (e <= -0.5)
-                {
-                    y--;
-                    e -= ajust;
-                }
-                x++;
-            
-            }
-        }
-        //      OCTANT 6 ET 5 (A GAUCHE AXE ORDONNE (Y))
-        else
-        {
-            while (x >= next.x)
-            {
-                img_pixel_put(&img, x, y, 0x00FFFFFF);
-                e += pente;
-                if (e <= -0.5)
-                {
-                    y++;
-                    e -= ajust;
-                }
-                x--;
-                printf("x = %d, y = %d\n",x, y);
-            }
-        }
-    }
 }
 
 void    tracing(t_data img, t_needle **tab, int width, int length)
@@ -204,22 +80,17 @@ t_needle **create(int length, int width)
     return (tab);
 }
 
-t_needle    **quadrillage(t_data img, int **tab, int width, int length)
+t_needle    **quadrillage(int **tab, int width, int length, t_vars *vars)
 {
-	int x;
-	int y;
-	t_point origine;
-	t_point point;
-	t_point curr;
-	int echelle;
-	t_needle **map;
+	int         x;
+	int         y;
+	t_point     curr;
+	t_needle    **map;
 
 	x = 0;
 	y = 0;
-	origine.x = 50;
-	origine.y = 50;
-	echelle = 15;
-	int i = 0;
+	vars->origine.x = LENGTH / vars->echelle / 2;
+	vars->origine.y = WIDTH / vars->echelle / 2;
 	map = create(length, width);
 	while (y < width)
 	{
@@ -228,12 +99,8 @@ t_needle    **quadrillage(t_data img, int **tab, int width, int length)
 			curr.x = x;
 			curr.y = y;
 			curr.z = tab[y][x];
-			// printf("z = %f", curr.z);
-			map[y][x] = projection(curr, echelle, origine, length, width);
-			// printf("%d eme point : x = %f, y = %f\n", i, point.x, point.y);
-			img_pixel_put(&img, point.x, point.y, 0x00FFFFFF);
+			map[y][x] = projection(curr, vars->echelle, vars->origine);
 			x++;
-			i++;
 		}
 		x = 0;
 		y++;
@@ -280,49 +147,88 @@ int closing_mouse(t_vars *vars)
 		y++;
 	}
 	free(vars->tab);
+    y = 0;
+    while (y < vars->width)
+	{
+		free(vars->map[y]);
+		y++;
+	}
+    free(vars->map);
 	exit(0);
 }
 
-void	display_point(int **tab, int width, int length)
+void    fdf(int **tab, int width, int length, t_vars *vars)
+{
+    t_needle **map;
+
+    vars->echelle = 10;
+    vars->tab = tab;
+    vars->width = width;
+    map = quadrillage(tab, width, length, vars);
+	tracing(vars->img, map, width, length);
+    vars->map = map;
+}
+
+void	mlx(int **tab, int width, int length)
 {
 	t_vars vars;
-    t_data  img;
-	t_needle **map;
 
     vars.mlx = mlx_init();
-    vars.win = mlx_new_window(vars.mlx, 1920, 1080, "FdF to come");
-	
-	img.img = mlx_new_image(vars.mlx, 1920, 1080);
-    img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-    
-    map = quadrillage(img, tab, width, length);
-	tracing(img, map, width, length);
-    mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
-
-	vars.img = img;
-	vars.tab = tab;
-	vars.width = width;
+    vars.win = mlx_new_window(vars.mlx, LENGTH, WIDTH, "FdF to come");
+	vars.img.img = mlx_new_image(vars.mlx, LENGTH, WIDTH);
+    vars.img.addr = mlx_get_data_addr(vars.img.img, &(vars.img.bits_per_pixel), &(vars.img.line_length), &(vars.img.endian));
+    fdf(tab, width, length, &vars);
+    mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
+    // mlx_expose_hook(vars.win, mouse_hook, &vars);
+    // mlx_key_hook(vars.win, key_hook, &vars);
     mlx_hook(vars.win, 2, 1L<<0, closing_key, &vars);
     mlx_hook(vars.win, 17, 1L<<5, closing_mouse, &vars);
     mlx_loop(vars.mlx);
 }
 
+void	print(int **tab, int width, int length)
+{
+	printf("\n\n\n");
+	int x = 0;
+	int y = 0;
+	while (y < width)
+	{
+		while (x < length)
+		{
+			printf("%d ", tab[y][x]);
+			x++;
+		}
+		printf("\n");
+		x = 0;
+		y++;
+	}
+}
+
 int main(int ac, char **av)
 {
     int     fd;
-    char    *tmp;
-    char    *str;
-    int     **map;
 	int		width;
 	int		length;
+    int     **tab;
+    char    *str;
+    char *tmp;
 
 	width = 0;
 	length = 0;
     str = NULL;
+    if (ac == 1 || ac > 2)
+    {
+        ft_putstr_fd("  usage: ./fdf <map>\n", 2);
+        exit(1);
+    }
     fd = open(av[1], O_RDONLY);
     if (fd == 0 || fd == -1)
+    {
+        ft_putstr_fd(av[1], 2);
+        perror(" ");
         exit(1);
-    while (1)
+    }
+	while (1)
     {
         tmp = get_next_line(fd, 0);
         if (!tmp)
@@ -334,10 +240,10 @@ int main(int ac, char **av)
             exit(1);
 		width++;
     }
-    map = split_tab(str, '\n');
+    tab = split_tab(str, '\n');
 	free(tmp);
 	free(str);
-	print(map, width, length);
-	display_point(map, width, length);
+	// print(tab, width, length);
+	mlx(tab, width, length);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:15:38 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/19 17:47:04 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/23 17:54:56 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,16 @@ int ft_strlen_modif(char *str)
         i++;
     }
     return (res);
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return ;
+	while (s[i])
+		i++;
+	write(fd, s, i);
 }
