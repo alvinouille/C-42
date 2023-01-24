@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:15:21 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/24 16:02:06 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/24 17:37:45 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,39 @@ int		around(float nb)
 		return ((int)floor(nb));
 }
 
-t_needle		projection(t_point curr, int echelle, t_point origine)
+t_needle		projection(t_point curr, t_vars *vars)
 {
 	t_needle point;
 
 	point.x = (curr.x - curr.y) * (sqrt(2.0) / 2);
 	point.y = -(curr.z * (sqrt(2.0 / 3.0))) - (1 / (sqrt(6.0)) * -((curr.x + curr.y)));
 
-	point.x = round((origine.x + point.x) * echelle);
-	point.y = round((origine.y + point.y) * echelle);
+	point.x = round((vars->origine.x + point.x) * vars->echelle);
+	point.y = round((vars->origine.y + point.y) * vars->echelle);
+    printf("position x1 = %f, y = %f\n", point.x, point.y);
+    // while (point.x >= LENGTH)   // non car il faudrait recalculer tout le reste des points pr que ca match
+    // {
+    //     // vars->origine.x -= 1;
+    //     vars->echelle --;
+    //     printf("here");
+    //     point.x = round((vars->origine.x + point.x) * vars->echelle);
+    // }
+    // while (point.x < 0)
+    // {
+    //     vars->origine.x += LENGTH / 2;
+    //     point.x = round((vars->origine.x + point.x) * vars->echelle);
+    // }
+    // while (point.y >= WIDTH)
+    // {
+    //     vars->origine.y += 1;
+    //     point.y = round((vars->origine.y + point.y) * vars->echelle);
+    // }
+    // while (point.y < 0)
+    // {
+    //     vars->origine.y += 1;
+    //     point.y = round((vars->origine.y + point.y) * vars->echelle);
+    // }
+    // printf("position x2 = %f, y = %f\n", point.x, point.y);
 	return (point);
 }
 
@@ -97,13 +121,33 @@ t_needle    **quadrillage(int **tab, t_vars *vars)
 			curr.x = x;
 			curr.y = y;
 			curr.z = tab[y][x];
-			map[y][x] = projection(curr, vars->echelle, vars->origine);
+			map[y][x] = projection(curr, vars);
 			x++;
 		}
 		x = 0;
 		y++;
 	}
 	return (map);
+}
+
+void    black_screen(t_vars *vars)
+{
+    double i;
+    double j;
+
+    i = 1;
+    j = 1;
+    while (j < WIDTH)
+    {
+        while (i < LENGTH)
+        {
+            img_pixel_put(&(vars->img), i, j, 0x191970);
+            i++;
+        }
+        i = 0;
+        j++;
+    }
+    // printf("i = %f, j = %f", i, j);
 }
 
 int closing_key(int keycode, t_vars *vars)
@@ -166,6 +210,7 @@ int    fdf(t_vars *vars)
 {
     t_needle **map;
 
+    black_screen(vars);
     map = quadrillage(vars->tab, vars);
 	tracing(vars->img, map, vars->width, vars->leng);
     vars->map = map;
@@ -190,26 +235,18 @@ int     key_hook(int keycode, t_vars *vars)
     return (0);
 }
 
-// int     mouse_hook()
-
-
 void	mlx(int **tab, t_vars vars)
 {
-    vars.echelle = 2;
+    vars.echelle = 25;
     vars.origine.x = LENGTH / vars.echelle / 2;
 	vars.origine.y = WIDTH / vars.echelle / 2;
     vars.mlx = mlx_init();
     vars.win = mlx_new_window(vars.mlx, LENGTH, WIDTH, "FdF to come");
 	vars.img.img = mlx_new_image(vars.mlx, LENGTH, WIDTH);
     vars.img.addr = mlx_get_data_addr(vars.img.img, &(vars.img.bits_per_pixel), &(vars.img.line_length), &(vars.img.endian));
-    // fdf(tab, width, length, &vars);
-    // mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
-    // mlx_expose_hook(vars.win, mouse_hook, &vars);
-    // fdf(tab, width, length, &vars);
     vars.tab = tab;
     mlx_loop_hook(vars.mlx, fdf, &vars);
     mlx_key_hook(vars.win, key_hook, &vars);
-    // mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
     mlx_hook(vars.win, 2, 1L<<0, closing_key, &vars);
     mlx_hook(vars.win, 17, 1L<<5, closing_mouse, &vars);
     mlx_loop(vars.mlx);
