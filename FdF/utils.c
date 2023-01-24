@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:15:38 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/23 17:54:56 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/24 14:46:53 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,15 @@ char	*ft_strjoin(char *s1, char *s2)
         free(s2);
 	str[i] = '\0';
 	return (str);
+}
+
+int	ft_isalnum(int c)
+{
+	if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90)
+		|| (c >= 97 && c <= 122))
+		return (1);
+	else
+		return (0);
 }
 
 void	img_pixel_put(t_data *img, double x, double y, int color)

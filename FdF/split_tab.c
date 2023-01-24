@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_tab.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:18:32 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/23 20:10:10 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/24 15:26:33 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,29 @@ static int	tab_length(char *str, char c)
 {
 	int	i;
 	int	nb;
+	int flag;
 
 	nb = 0;
 	i = 0;
+	flag = 0;
 	while (str[i] != c && str[i])
 	{
-		if (str[i] >= '0' && str[i] <= '9')
+		if (str[i] >= '0' && str[i] <= '9' || str[i] == '-')
 		{
 			nb++;
-			while (str[i] >= '0' && str[i] <= '9')
+			while (str[i] >= '0' && str[i] <= '9' || str[i] == '-')
 				i++;
+			if (str[i] == ',')
+			{
+				i++;
+				while (ft_isalnum(str[i]) == 1)
+					i++;
+			}
 		}
 		else
 			i++;			
 	}
+	printf("length = %d\n", nb);
 	return (nb);
 }
 
@@ -68,11 +77,17 @@ static int	curr_length(char *str, char c)
 	int	i;
 
 	i = 0;
-	while (str[i] >= '0' && str[i] <= '9')
+	while (str[i] >= '0' && str[i] <= '9' || str[i] == '-')
 		i++;
+	if (str[i] == ',')
+	{
+		i++;
+		while (ft_isalnum(str[i]) == 1)
+			i++;
+	}
 	while (str[i])
 	{
-		if (str[i] == c || (str[i] >= '0' && str[i] <= '9'))
+		if (str[i] == c || (str[i] >= '0' && str[i] <= '9') || str[i] == '-')
 			break;
 		i++;
 	}
@@ -89,7 +104,7 @@ static int	**splitting(int **tab, char *s, char c)
 	j = 0;
 	while (s[i])
 	{
-		if (s[i] != c)
+		if (s[i] != c && s[i] >= '0' && s[i] <= '9')
 		{
 			tab[j] = malloc(sizeof(int) * tab_length(&s[i], c));
 			if (!tab)
@@ -122,5 +137,6 @@ int	**split_tab(char *s, char c)
 	if (!tab)
 		return (NULL);
 	tab = splitting(tab, s, c);
+	print(tab, width, 3);
 	return (tab);
 }

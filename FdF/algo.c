@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:15:21 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/23 20:20:30 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/24 15:27:35 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,6 @@ t_needle    **quadrillage(int **tab, int width, int length, t_vars *vars)
 
 	x = 0;
 	y = 0;
-	vars->origine.x = LENGTH / vars->echelle / 2;
-	vars->origine.y = WIDTH / vars->echelle / 2;
 	map = create(length, width);
 	while (y < width)
 	{
@@ -157,30 +155,54 @@ int closing_mouse(t_vars *vars)
 	exit(0);
 }
 
-void    fdf(int **tab, int width, int length, t_vars *vars)
+int    fdf(t_vars *vars)
 {
     t_needle **map;
 
-    vars->echelle = 10;
-    vars->tab = tab;
-    vars->width = width;
-    map = quadrillage(tab, width, length, vars);
-	tracing(vars->img, map, width, length);
+    map = quadrillage(vars->tab, vars->width, vars->length, vars);
+	tracing(vars->img, map, vars->width, vars->length);
     vars->map = map;
+    mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
+    return (0);
 }
+
+int     key_hook(int keycode, t_vars *vars)
+{
+    if (keycode == XK_w)
+        vars->origine.y -=1;
+    if (keycode == XK_a)
+        vars->origine.x -=1;
+    if (keycode == XK_s)
+        vars->origine.y +=1;
+    if (keycode == XK_d)
+        vars->origine.x +=1;
+    return (0);
+}
+
+// int     mouse_hook()
+
 
 void	mlx(int **tab, int width, int length)
 {
 	t_vars vars;
 
+    vars.echelle = 10;
+    vars.origine.x = LENGTH / vars.echelle / 2;
+	vars.origine.y = WIDTH / vars.echelle / 2;
     vars.mlx = mlx_init();
     vars.win = mlx_new_window(vars.mlx, LENGTH, WIDTH, "FdF to come");
 	vars.img.img = mlx_new_image(vars.mlx, LENGTH, WIDTH);
     vars.img.addr = mlx_get_data_addr(vars.img.img, &(vars.img.bits_per_pixel), &(vars.img.line_length), &(vars.img.endian));
-    fdf(tab, width, length, &vars);
-    mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
+    // fdf(tab, width, length, &vars);
+    // mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
     // mlx_expose_hook(vars.win, mouse_hook, &vars);
-    // mlx_key_hook(vars.win, key_hook, &vars);
+    // fdf(tab, width, length, &vars);
+    vars.tab = tab;
+    vars.length = length;
+    vars.width = width;
+    mlx_loop_hook(vars.mlx, fdf, &vars);
+    mlx_key_hook(vars.win, key_hook, &vars);
+    // mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
     mlx_hook(vars.win, 2, 1L<<0, closing_key, &vars);
     mlx_hook(vars.win, 17, 1L<<5, closing_mouse, &vars);
     mlx_loop(vars.mlx);
@@ -233,7 +255,6 @@ int main(int ac, char **av)
         tmp = get_next_line(fd, 0);
         if (!tmp)
             break;
-		printf("%s", tmp);
 		length = ft_strlen_modif(tmp);
         str = ft_strjoin(str, tmp);
         if (!str)
@@ -243,7 +264,7 @@ int main(int ac, char **av)
     tab = split_tab(str, '\n');
 	free(tmp);
 	free(str);
-	// print(tab, width, length);
+	print(tab, width, length);
 	mlx(tab, width, length);
 	return (0);
 }

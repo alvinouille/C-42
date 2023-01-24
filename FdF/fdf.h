@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:15:33 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/23 20:12:02 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/24 15:20:33 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct	s_vars {
     t_data  img;
     int     **tab;
     int     width;
+    int     length;
     int     echelle;
     t_point origine;
     t_needle **map;
@@ -61,6 +62,8 @@ int     ft_atoi(char *nptr);
 int     ft_strlen_modif(char *str);
 void	ft_putstr_fd(char *s, int fd);
 int		around(float nb);
+int	ft_isalnum(int c);
+void	print(int **tab, int width, int length);
 
 //      MLX
 void	img_pixel_put(t_data *img, double x, double y, int color);
