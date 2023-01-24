@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:15:21 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/24 15:27:35 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/24 16:02:06 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ t_needle		projection(t_point curr, int echelle, t_point origine)
 	return (point);
 }
 
-void    tracing(t_data img, t_needle **tab, int width, int length)
+void    tracing(t_data img, t_needle **tab, int width, int *length)
 {
     int i = 0;
     int j = 0;
 
     while (j < width)
     {
-        while (i < length -1)
+        while (i < length[j] -1) //??
         {
             bresenham(img, tab[j][i], tab[j][i + 1]);
             // img_pixel_put(&img, tab[j][i].x, tab[j][i].y, 0x00FFFFFF);
@@ -52,7 +52,7 @@ void    tracing(t_data img, t_needle **tab, int width, int length)
     }
     i = 0;
     j = 0;
-    while (i < length)
+    while (i < length[j]) //??
     {
         while (j < width -1)
         {
@@ -66,7 +66,7 @@ void    tracing(t_data img, t_needle **tab, int width, int length)
 
 }
 
-t_needle **create(int length, int width)
+t_needle **create(int *length, int width)
 {
     int i;
 
@@ -74,13 +74,13 @@ t_needle **create(int length, int width)
     t_needle **tab = malloc(sizeof (t_needle *) * width);
     while (i < width)
     {
-        tab[i] = malloc(sizeof(t_needle) * length);
+        tab[i] = malloc(sizeof(t_needle) * length[i]);
         i++;
     }
     return (tab);
 }
 
-t_needle    **quadrillage(int **tab, int width, int length, t_vars *vars)
+t_needle    **quadrillage(int **tab, t_vars *vars)
 {
 	int         x;
 	int         y;
@@ -89,10 +89,10 @@ t_needle    **quadrillage(int **tab, int width, int length, t_vars *vars)
 
 	x = 0;
 	y = 0;
-	map = create(length, width);
-	while (y < width)
+	map = create(vars->leng, vars->width);
+	while (y < vars->width)
 	{
-		while (x < length)
+		while (x < vars->leng[y])
 		{
 			curr.x = x;
 			curr.y = y;
@@ -124,6 +124,13 @@ int closing_key(int keycode, t_vars *vars)
 			y++;
 		}
 		free(vars->tab);
+        y = 0;
+        while (y < vars->width)
+	    {
+		    free(vars->map[y]);
+		    y++;
+	    }
+        free(vars->map);
 		exit(0);
     }
     return (0);
@@ -159,8 +166,8 @@ int    fdf(t_vars *vars)
 {
     t_needle **map;
 
-    map = quadrillage(vars->tab, vars->width, vars->length, vars);
-	tracing(vars->img, map, vars->width, vars->length);
+    map = quadrillage(vars->tab, vars);
+	tracing(vars->img, map, vars->width, vars->leng);
     vars->map = map;
     mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
     return (0);
@@ -176,17 +183,19 @@ int     key_hook(int keycode, t_vars *vars)
         vars->origine.y +=1;
     if (keycode == XK_d)
         vars->origine.x +=1;
+    if (keycode == XK_o)
+        vars->echelle += 1;
+    if (keycode == XK_u)
+        vars->echelle -= 1;
     return (0);
 }
 
 // int     mouse_hook()
 
 
-void	mlx(int **tab, int width, int length)
+void	mlx(int **tab, t_vars vars)
 {
-	t_vars vars;
-
-    vars.echelle = 10;
+    vars.echelle = 2;
     vars.origine.x = LENGTH / vars.echelle / 2;
 	vars.origine.y = WIDTH / vars.echelle / 2;
     vars.mlx = mlx_init();
@@ -198,8 +207,6 @@ void	mlx(int **tab, int width, int length)
     // mlx_expose_hook(vars.win, mouse_hook, &vars);
     // fdf(tab, width, length, &vars);
     vars.tab = tab;
-    vars.length = length;
-    vars.width = width;
     mlx_loop_hook(vars.mlx, fdf, &vars);
     mlx_key_hook(vars.win, key_hook, &vars);
     // mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
@@ -208,14 +215,14 @@ void	mlx(int **tab, int width, int length)
     mlx_loop(vars.mlx);
 }
 
-void	print(int **tab, int width, int length)
+void	print(int **tab, int width, int *leng)
 {
 	printf("\n\n\n");
 	int x = 0;
 	int y = 0;
 	while (y < width)
 	{
-		while (x < length)
+		while (x < leng[y])
 		{
 			printf("%d ", tab[y][x]);
 			x++;
@@ -234,6 +241,7 @@ int main(int ac, char **av)
     int     **tab;
     char    *str;
     char *tmp;
+    t_vars  vars;
 
 	width = 0;
 	length = 0;
@@ -261,10 +269,10 @@ int main(int ac, char **av)
             exit(1);
 		width++;
     }
-    tab = split_tab(str, '\n');
+    tab = split_tab(str, '\n', &vars);
 	free(tmp);
 	free(str);
-	print(tab, width, length);
-	mlx(tab, width, length);
+	print(tab, vars.width, vars.leng);
+	mlx(tab, vars);
 	return (0);
 }

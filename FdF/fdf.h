@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:15:33 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/24 15:20:33 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/24 15:43:31 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ typedef struct	s_vars {
     t_data  img;
     int     **tab;
     int     width;
-    int     length;
     int     echelle;
     t_point origine;
     t_needle **map;
+    int     *leng;
 }				t_vars;
 
 
@@ -63,7 +63,7 @@ int     ft_strlen_modif(char *str);
 void	ft_putstr_fd(char *s, int fd);
 int		around(float nb);
 int	ft_isalnum(int c);
-void	print(int **tab, int width, int length);
+void	print(int **tab, int width, int *leng);
 
 //      MLX
 void	img_pixel_put(t_data *img, double x, double y, int color);
@@ -81,6 +81,6 @@ void    seventh(t_data img, t_needle curr, t_needle next);
 void    bresenham(t_data img, t_needle curr, t_needle next);
 
 //      PARSING
-int	**split_tab(char *s, char c);
+int	**split_tab(char *s, char c, t_vars *vars);
 
 #endif

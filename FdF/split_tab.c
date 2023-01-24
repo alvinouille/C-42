@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:18:32 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/24 15:26:33 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/24 15:40:32 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static int	curr_length(char *str, char c)
 	return (i);
 }
 
-static int	**splitting(int **tab, char *s, char c)
+static int	**splitting(int **tab, char *s, char c, t_vars *vars)
 {
 	int	k;
 	int	j;
@@ -107,6 +107,7 @@ static int	**splitting(int **tab, char *s, char c)
 		if (s[i] != c && s[i] >= '0' && s[i] <= '9')
 		{
 			tab[j] = malloc(sizeof(int) * tab_length(&s[i], c));
+			vars->leng[j] = tab_length(&s[i], c);
 			if (!tab)
 				return (free_tab(tab, j));
 			k = 0;
@@ -124,7 +125,7 @@ static int	**splitting(int **tab, char *s, char c)
 	return (tab);
 }
 
-int	**split_tab(char *s, char c)
+int	**split_tab(char *s, char c, t_vars *vars)
 {
 	int		**tab;
 	int     width;
@@ -134,9 +135,10 @@ int	**split_tab(char *s, char c)
 	s[len -1] = '\0';
 	width = tab_width(s, c);
 	tab = (int **) malloc(sizeof(int *) * width);
+	vars->leng = (int *) malloc(sizeof(int) * width);
 	if (!tab)
 		return (NULL);
-	tab = splitting(tab, s, c);
-	print(tab, width, 3);
+	tab = splitting(tab, s, c, vars);
+	vars->width = width;
 	return (tab);
 }
