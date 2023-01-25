@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:15:38 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/25 11:32:19 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/25 16:13:46 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,12 @@ int	ft_isalnum(int c)
 		return (0);
 }
 
-void	img_pixel_put(t_data *img, int x, int y, int color)
+void	img_pixel_put(t_data *img, double x, double y, int color)
 {
 	char	*px;
 
 	px = img->addr + around((y * img->line_length + x * (img->bits_per_pixel / 8)));
+	
 	*(unsigned int*)px = color;
 }
 

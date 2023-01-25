@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:15:21 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/25 11:31:16 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/25 16:03:46 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,23 @@ int		around(float nb)
 t_needle		projection(t_point curr, t_vars *vars)
 {
 	t_needle point;
+    // int tmpx;
+    // int tmpy;
 
+    // point.x = curr.x * vars->echelle;
+    // point.y = curr.y * vars->echelle;
+    // tmpx = point.x;
+    // tmpy = point.y;
+    // point.x = (tmpx - tmpy) * cos(0);
+    // point.y = (tmpx + tmpy) * sin(0) - curr.z;
+    // point.x += vars->origine.x;
+    // point.y += vars->origine.y;
 	point.x = (curr.x - curr.y) * (sqrt(2.0) / 2);
 	point.y = -(curr.z * (sqrt(2.0 / 3.0))) - (1 / (sqrt(6.0)) * -((curr.x + curr.y)));
 
 	point.x = round((vars->origine.x + point.x) * vars->echelle);
 	point.y = round((vars->origine.y + point.y) * vars->echelle);
-    // img_pixel_put(&(vars->img), (float)point.x, (float)point.y, 0x00FFFFFF);
+    // img_pixel_put(&(vars->img), point.x, point.y, 0x00FFFFFF);
     // printf("position x1 = %f, y = %f\n", point.x, point.y);
 	return (point);
 }
@@ -43,7 +53,7 @@ void    tracing(t_data img, t_needle **tab, int width, int *length)
 
     while (j < width)
     {
-        while (i < length[j] -1)
+        while (i < length[j] - 1)
         {
             bresenham(img, tab[j][i], tab[j][i + 1]);
             // img_pixel_put(&img, tab[j][i].x, tab[j][i].y, 0x00FFFFFF);
@@ -56,7 +66,7 @@ void    tracing(t_data img, t_needle **tab, int width, int *length)
     j = 0;
     while (i < length[j])
     {
-        while (j < width -1)
+        while (j < width - 1)
         {
             bresenham(img, tab[j][i], tab[j + 1][i]);
             // img_pixel_put(&img, tab[j][i].x, tab[j][i].y, 0x00FFFFFF);
@@ -284,6 +294,7 @@ int main(int ac, char **av)
             exit(1);
 		width++;
     }
+    printf("\n\nfirst:\n%s\n", str);
     tab = split_tab(str, '\n', &vars);
 	free(tmp);
 	free(str);

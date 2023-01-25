@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:18:32 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/25 10:05:01 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/25 16:03:03 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	tab_width(char *str, char c)
 	nb = 1;
 	while (str[i])
 	{
-		if (str[i] == c)
+		if (str[i] == c && str[i + 1] != '\0')
 			nb++;
 		i++;
 	}
@@ -68,7 +68,7 @@ static int	tab_length(char *str, char c)
 		else
 			i++;			
 	}
-	printf("length = %d\n", nb);
+	// printf("length = %d\n", nb);
 	return (nb);
 }
 
@@ -104,7 +104,7 @@ static int	**splitting(int **tab, char *s, char c, t_vars *vars)
 	j = 0;
 	while (s[i])
 	{
-		if (s[i] != c && s[i] >= '0' && s[i] <= '9')
+		if (s[i] != c && s[i] >= '0' && s[i] <= '9' || s[i] == '-')
 		{
 			tab[j] = malloc(sizeof(int) * tab_length(&s[i], c));
 			vars->leng[j] = tab_length(&s[i], c);
@@ -129,10 +129,9 @@ int	**split_tab(char *s, char c, t_vars *vars)
 {
 	int		**tab;
 	int     width;
-	int		len;
 
-	len = ft_strlen(s);
-	s[len -1] = '\0'; //segfault si 42fdf mais fait foirer si pyramide
+	if (!s)
+		return (0);
 	width = tab_width(s, c);
 	tab = (int **) malloc(sizeof(int *) * width);
 	vars->leng = (int *) malloc(sizeof(int) * width);
@@ -140,5 +139,6 @@ int	**split_tab(char *s, char c, t_vars *vars)
 		return (NULL);
 	tab = splitting(tab, s, c, vars);
 	vars->width = width;
+	// printf("width = %d\n", vars->width);
 	return (tab);
 }

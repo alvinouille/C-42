@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:15:33 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/25 10:47:58 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:18:43 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	ft_isalnum(int c);
 void	print(int **tab, int width, int *leng);
 
 //      MLX
-void	img_pixel_put(t_data *img, int x, int y, int color);
+void	img_pixel_put(t_data *img, double x, double y, int color);
 
 //		BRASENHAM
 void    first(t_data img, t_needle curr, t_needle next);
