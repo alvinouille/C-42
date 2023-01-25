@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:15:21 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/24 17:37:45 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/25 11:31:16 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,30 +31,8 @@ t_needle		projection(t_point curr, t_vars *vars)
 
 	point.x = round((vars->origine.x + point.x) * vars->echelle);
 	point.y = round((vars->origine.y + point.y) * vars->echelle);
-    printf("position x1 = %f, y = %f\n", point.x, point.y);
-    // while (point.x >= LENGTH)   // non car il faudrait recalculer tout le reste des points pr que ca match
-    // {
-    //     // vars->origine.x -= 1;
-    //     vars->echelle --;
-    //     printf("here");
-    //     point.x = round((vars->origine.x + point.x) * vars->echelle);
-    // }
-    // while (point.x < 0)
-    // {
-    //     vars->origine.x += LENGTH / 2;
-    //     point.x = round((vars->origine.x + point.x) * vars->echelle);
-    // }
-    // while (point.y >= WIDTH)
-    // {
-    //     vars->origine.y += 1;
-    //     point.y = round((vars->origine.y + point.y) * vars->echelle);
-    // }
-    // while (point.y < 0)
-    // {
-    //     vars->origine.y += 1;
-    //     point.y = round((vars->origine.y + point.y) * vars->echelle);
-    // }
-    // printf("position x2 = %f, y = %f\n", point.x, point.y);
+    // img_pixel_put(&(vars->img), (float)point.x, (float)point.y, 0x00FFFFFF);
+    // printf("position x1 = %f, y = %f\n", point.x, point.y);
 	return (point);
 }
 
@@ -65,7 +43,7 @@ void    tracing(t_data img, t_needle **tab, int width, int *length)
 
     while (j < width)
     {
-        while (i < length[j] -1) //??
+        while (i < length[j] -1)
         {
             bresenham(img, tab[j][i], tab[j][i + 1]);
             // img_pixel_put(&img, tab[j][i].x, tab[j][i].y, 0x00FFFFFF);
@@ -76,7 +54,7 @@ void    tracing(t_data img, t_needle **tab, int width, int *length)
     }
     i = 0;
     j = 0;
-    while (i < length[j]) //??
+    while (i < length[j])
     {
         while (j < width -1)
         {

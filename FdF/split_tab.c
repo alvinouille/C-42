@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:18:32 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/24 15:40:32 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/25 10:05:01 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int	**split_tab(char *s, char c, t_vars *vars)
 	int		len;
 
 	len = ft_strlen(s);
-	s[len -1] = '\0';
+	s[len -1] = '\0'; //segfault si 42fdf mais fait foirer si pyramide
 	width = tab_width(s, c);
 	tab = (int **) malloc(sizeof(int *) * width);
 	vars->leng = (int *) malloc(sizeof(int) * width);
