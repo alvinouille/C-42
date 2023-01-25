@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:20:14 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/25 14:42:17 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/25 20:58:01 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,21 @@ typedef struct	s_data
 	int		endian;
 }				t_data;
 
+typedef struct	s_adr {
+	void	*player;
+	void	*collec;
+	void	*border;
+	void	*exit;
+	void	*background;
+}				t_adr;
+
 typedef struct	s_vars {
 	void	*mlx;
 	void	*win;
-    t_data  img;
+	int		length;
+	int 	width;
     char     **tab;
+	t_adr	img;
 }				t_vars;
 
 //      UTILS
@@ -44,12 +54,24 @@ void	ft_bzero(void *s, size_t n);
 char	*ft_strjoin(char *s1, char *s2);
 
 //      PARSING
-int is_ok(char **tab);
+int is_ok(char **tab, char **tmp);
 int is_rectangular(char **tab);
 int cep_check(char **tab);
 int wrong_char(char **tab);
 int check_col(char **tab);
 int check_line(char *str);
 int is_closed(char **tab);
+int is_valid(char **tab);
+void	print(char **tab);
+
+//		MOVE
+void    move_up(t_vars *vars);
+void    move_down(t_vars *vars);
+void    move_right(t_vars *vars);
+void    move_left(t_vars *vars);
+
+//		DISPLAY_MAP
+void    display_img(char c, int x, int y, t_vars *vars);
+void    display_game(char **tab, t_vars *vars);
 
 #endif

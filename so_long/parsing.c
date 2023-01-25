@@ -6,13 +6,13 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:54:40 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/25 15:00:46 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/25 17:21:31 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int is_ok(char **tab)
+int is_ok(char **tab, char **tmp)
 {
     if (!is_rectangular(tab))
         return (0);
@@ -21,6 +21,8 @@ int is_ok(char **tab)
     if (!cep_check(tab))
         return (0);
     if (!is_closed(tab))
+        return (0);
+    if (!is_valid(tmp))
         return (0);
     return (1);
 }

@@ -25,24 +25,13 @@ int		around(float nb)
 t_needle		projection(t_point curr, t_vars *vars)
 {
 	t_needle point;
-    // int tmpx;
-    // int tmpy;
 
-    // point.x = curr.x * vars->echelle;
-    // point.y = curr.y * vars->echelle;
-    // tmpx = point.x;
-    // tmpy = point.y;
-    // point.x = (tmpx - tmpy) * cos(0);
-    // point.y = (tmpx + tmpy) * sin(0) - curr.z;
-    // point.x += vars->origine.x;
-    // point.y += vars->origine.y;
 	point.x = (curr.x - curr.y) * (sqrt(2.0) / 2);
 	point.y = -(curr.z * (sqrt(2.0 / 3.0))) - (1 / (sqrt(6.0)) * -((curr.x + curr.y)));
 
 	point.x = round((vars->origine.x + point.x) * vars->echelle);
 	point.y = round((vars->origine.y + point.y) * vars->echelle);
-    // img_pixel_put(&(vars->img), point.x, point.y, 0x00FFFFFF);
-    // printf("position x1 = %f, y = %f\n", point.x, point.y);
+
 	return (point);
 }
 

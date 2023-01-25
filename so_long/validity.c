@@ -6,13 +6,13 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 14:59:14 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/25 15:16:06 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/25 17:25:44 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int char_check(char **tab, char c1, char c2)
+static int char_check(char **tab, char c1, char c2)
 {
     int i;
     int j;
@@ -33,35 +33,100 @@ int char_check(char **tab, char c1, char c2)
     return (0);
 }
 
-int     px_check(char *str)
+static int     px_check(char **tab, int i)
 {
-    int i;
+    int j;
 
-    i = 0;
-    while (str[i])
+    j = 1;
+    while (tab[i][j])
     {
-        if (str[i] == 'X' || str[i] == 'P')
-            return (i);
-        i++;
+        if (tab[i][j] == 'P' || tab[i][j] == 'X')
+        {
+            if (tab[i + 1][j] != '1' && tab[i + 1][j] != 'X')
+                return (j);
+            if (tab[i - 1][j] != '1' && tab[i - 1][j] != 'X')
+                return (j);
+            if (tab[i][j + 1] != '1' && tab[i][j + 1] != 'X')
+                return (j);
+            if (tab[i][j - 1] != '1' && tab[i][j - 1] != 'X')
+                return (j);
+        }
+        j++;
     }
     return (-1);
 }
 
-int changing(char **tab)
+
+static void change_line(char *str, int pos, int *change)
+{
+    if (str[pos + 1] == '0' || str[pos + 1] == 'C')
+    {
+        str[pos + 1] = 'X';
+        (*change) ++;
+    }
+    if (str[pos - 1] == '0' || str[pos - 1] == 'C')
+    {
+        str[pos - 1] = 'X';
+        (*change) ++;
+    }
+    if (str[pos + 1] == 'E')
+    {
+        str[pos + 1] = '1';
+        (*change) ++;
+    }
+    if (str[pos - 1] == 'E')
+    {
+        str[pos - 1] = '1';
+        (*change) ++;
+    }
+}
+
+static void change_col(char **tab, int i, int pos, int *change)
+{
+    if (tab[i - 1][pos] == '0' || tab[i - 1][pos] == 'C')
+    {
+        tab[i - 1][pos] = 'X';
+        (*change) ++;
+    }
+    if (tab[i + 1][pos] == '0' || tab[i + 1][pos] == 'C')
+    {
+        tab[i + 1][pos] = 'X';
+        (*change) ++;
+    }
+    if (tab[i - 1][pos] == 'E')
+    {
+        tab[i - 1][pos] = '1';
+        (*change) ++;
+    }
+    if (tab[i + 1][pos] == 'E')
+    {
+        tab[i + 1][pos] = '1';
+        (*change) ++;
+    }
+}
+
+static int changing(char **tab)
 {
     int i;
     int pos;
+    int change;
 
-    i = 0;
-    pos = 0;
+    i = 1;
+    pos = -1;
+    change = 0;
     while (tab[i])
     {
-        pos = px_check(tab[i]);
+        pos = px_check(tab, i);
         if (pos != -1)
         {
-            if (tab[i][pos + 1] == '0' || tab[i][pos + 1] == 'C')
+            change_line(tab[i], pos, &change);
+            change_col(tab, i, pos, &change);
+            tab[i][pos] = 'X';
+            return (change);
         }
+        i++;
     }
+    return (0);
 }
 
 int is_valid(char **tab)
@@ -74,7 +139,8 @@ int is_valid(char **tab)
         change = 0;
         change = changing(tab);
     }
-    if (char_check(tab, 'c', 'e'))
+    // print(tab);
+    if (char_check(tab, 'C', 'E'))
         return (0);
     return (1);
     
