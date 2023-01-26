@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:15:38 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/26 09:27:56 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/26 18:21:16 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	i = 0;
 	j = 0;
-    if (s1)
-	    length = ft_strlen(s1) + ft_strlen(s2);
-    else
-        length = ft_strlen(s2);
+	length = ft_strlen(s1) + ft_strlen(s2);
 	str = (char *) malloc(sizeof(char) * length + 1);
 	if (!str)
 	{
@@ -40,11 +37,11 @@ char	*ft_strjoin(char *s1, char *s2)
 	j = 0;
 	while (s2[j])
 		str[i++] = s2[j++];
+	str[i] = '\0';
     if (s1)
         free(s1);
     if (s2)
-        free(s2);
-	str[i] = '\0';
+        	free(s2);
 	return (str);
 }
 

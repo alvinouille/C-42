@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:15:21 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/26 11:19:08 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/26 18:54:54 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,9 +225,6 @@ void    such_a_quitter(t_vars *vars, int flag)
 
 void	mlx(t_vars vars)
 {
-    int     i;
-    
-    i = 0;
     vars.win = NULL;
     vars.img.img = NULL;
     vars.echelle = 25;
