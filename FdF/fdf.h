@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:15:33 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/25 15:18:43 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/26 09:59:42 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ void    fourth(t_data img, t_needle curr, t_needle next);
 void    eight(t_data img, t_needle curr, t_needle next);
 void    seventh(t_data img, t_needle curr, t_needle next);
 void    bresenham(t_data img, t_needle curr, t_needle next);
+
+//      TRASHING
+void    such_a_quitter(t_vars *vars, int flag);
 
 //      PARSING
 int	**split_tab(char *s, char c, t_vars *vars);

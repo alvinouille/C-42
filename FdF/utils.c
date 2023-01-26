@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:15:38 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/25 16:13:46 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/26 09:27:56 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ char	*ft_strjoin(char *s1, char *s2)
         length = ft_strlen(s2);
 	str = (char *) malloc(sizeof(char) * length + 1);
 	if (!str)
+	{
+		if (s1)
+			free(s1);
 		return (NULL);
+	}
 	if (s1)
     {
         while (s1[j])

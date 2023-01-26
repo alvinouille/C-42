@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:15:21 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/25 16:03:46 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/26 10:27:01 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void    tracing(t_data img, t_needle **tab, int width, int *length)
         while (i < length[j] - 1)
         {
             bresenham(img, tab[j][i], tab[j][i + 1]);
-            // img_pixel_put(&img, tab[j][i].x, tab[j][i].y, 0x00FFFFFF);
             i++;
         }
         i = 0;
@@ -58,7 +57,6 @@ void    tracing(t_data img, t_needle **tab, int width, int *length)
         while (j < width - 1)
         {
             bresenham(img, tab[j][i], tab[j + 1][i]);
-            // img_pixel_put(&img, tab[j][i].x, tab[j][i].y, 0x00FFFFFF);
             j++;
         }
         j = 0;
@@ -70,12 +68,26 @@ void    tracing(t_data img, t_needle **tab, int width, int *length)
 t_needle **create(int *length, int width)
 {
     int i;
+    int j;
 
     i = 0;
+    j = 0;
     t_needle **tab = malloc(sizeof (t_needle *) * width);
+    if (!tab)
+        return (NULL);
     while (i < width)
     {
         tab[i] = malloc(sizeof(t_needle) * length[i]);
+        if (!tab[i])
+        {
+            while (j < i)
+	        {
+		        free(tab[j]);
+		        j++;
+	        }
+            free(tab);
+            return (NULL);
+        }
         i++;
     }
     return (tab);
@@ -91,6 +103,8 @@ t_needle    **quadrillage(int **tab, t_vars *vars)
 	x = 0;
 	y = 0;
 	map = create(vars->leng, vars->width);
+    if (!map)
+        return (NULL);
 	while (y < vars->width)
 	{
 		while (x < vars->leng[y])
@@ -124,73 +138,37 @@ void    black_screen(t_vars *vars)
         i = 0;
         j++;
     }
-    // printf("i = %f, j = %f", i, j);
 }
 
 int closing_key(int keycode, t_vars *vars)
 {
-    int y;
-
-	y = 0;
 	if (keycode == 65307)
-    {
-        mlx_clear_window(vars->mlx, vars->win);
-        mlx_destroy_image(vars->mlx, vars->img.img);
-        mlx_destroy_window(vars->mlx, vars->win);
-        mlx_destroy_display(vars->mlx);
-        free(vars->mlx);
-		while (y < vars->width)
-		{
-			free(vars->tab[y]);
-			y++;
-		}
-		free(vars->tab);
-        y = 0;
-        while (y < vars->width)
-	    {
-		    free(vars->map[y]);
-		    y++;
-	    }
-        free(vars->map);
-		exit(0);
-    }
-    return (0);
+        such_a_quitter(vars, 0);
 }
 
 int closing_mouse(t_vars *vars)
 {
-    int y;
-
-	y = 0;
-	mlx_clear_window(vars->mlx, vars->win);
-    mlx_destroy_image(vars->mlx, vars->img.img);
-    mlx_destroy_window(vars->mlx, vars->win);
-    mlx_destroy_display(vars->mlx);
-    free(vars->mlx);
-	while (y < vars->width)
-	{
-		free(vars->tab[y]);
-		y++;
-	}
-	free(vars->tab);
-    y = 0;
-    while (y < vars->width)
-	{
-		free(vars->map[y]);
-		y++;
-	}
-    free(vars->map);
-	exit(0);
+    such_a_quitter(vars, 0);
 }
 
 int    fdf(t_vars *vars)
 {
-    t_needle **map;
+    t_needle    **map;
+    int         i;
 
+    i = 0;
+    map = NULL;
     black_screen(vars);
     map = quadrillage(vars->tab, vars);
-	tracing(vars->img, map, vars->width, vars->leng);
-    vars->map = map;
+	if (!map)
+        such_a_quitter(vars, 2);
+    tracing(vars->img, map, vars->width, vars->leng);
+    while (i < vars->width)
+	{
+		free(map[i]);
+		i++;
+	}
+    free(map);
     mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
     return (0);
 }
@@ -212,16 +190,59 @@ int     key_hook(int keycode, t_vars *vars)
     return (0);
 }
 
-void	mlx(int **tab, t_vars vars)
+void    such_a_quitter(t_vars *vars, int flag)
 {
+    int     i;
+
+    i = 0;
+    while (i < vars->width)
+	{
+		free(vars->tab[i]);
+		i++;
+	}
+	free(vars->tab);
+    free(vars->leng);
+    if (vars->win)
+    {
+        mlx_clear_window(vars->mlx, vars->win);
+        mlx_destroy_window(vars->mlx, vars->win);
+    }
+    if (vars->img.img)
+        mlx_destroy_image(vars->mlx, vars->img.img);
+    if (vars->mlx)
+    {
+        mlx_destroy_display(vars->mlx);
+        free(vars->mlx);
+    }
+    if (flag == 3)
+        ft_putstr_fd("Mlx failed !\n", 2);
+    if (flag == 2)
+        ft_putstr_fd("Malloc failed !\n", 2);
+    exit(flag);
+}
+
+void	mlx(t_vars vars)
+{
+    int     i;
+    
+    i = 0;
+    vars.win = NULL;
+    vars.img.img = NULL;
     vars.echelle = 25;
     vars.origine.x = LENGTH / vars.echelle / 2;
 	vars.origine.y = WIDTH / vars.echelle / 2;
     vars.mlx = mlx_init();
+    if (!vars.mlx)
+        such_a_quitter(&vars, 3);
     vars.win = mlx_new_window(vars.mlx, LENGTH, WIDTH, "FdF to come");
-	vars.img.img = mlx_new_image(vars.mlx, LENGTH, WIDTH);
+	if (!vars.win)
+        such_a_quitter(&vars, 3);
+    vars.img.img = mlx_new_image(vars.mlx, LENGTH, WIDTH);
+    if (!vars.img.img)
+        such_a_quitter(&vars, 3);
     vars.img.addr = mlx_get_data_addr(vars.img.img, &(vars.img.bits_per_pixel), &(vars.img.line_length), &(vars.img.endian));
-    vars.tab = tab;
+    if (!vars.img.addr)
+        such_a_quitter(&vars, 3);
     mlx_loop_hook(vars.mlx, fdf, &vars);
     mlx_key_hook(vars.win, key_hook, &vars);
     mlx_hook(vars.win, 2, 1L<<0, closing_key, &vars);
@@ -231,7 +252,6 @@ void	mlx(int **tab, t_vars vars)
 
 void	print(int **tab, int width, int *leng)
 {
-	printf("\n\n\n");
 	int x = 0;
 	int y = 0;
 	while (y < width)
@@ -250,15 +270,10 @@ void	print(int **tab, int width, int *leng)
 int main(int ac, char **av)
 {
     int     fd;
-	int		width;
-	int		length;
-    int     **tab;
     char    *str;
-    char *tmp;
+    char    *tmp;
     t_vars  vars;
 
-	width = 0;
-	length = 0;
     str = NULL;
     if (ac == 1 || ac > 2)
     {
@@ -277,17 +292,19 @@ int main(int ac, char **av)
         tmp = get_next_line(fd, 0);
         if (!tmp)
             break;
-		length = ft_strlen_modif(tmp);
         str = ft_strjoin(str, tmp);
         if (!str)
-            exit(1);
-		width++;
+        {
+            free(tmp);
+            ft_putstr_fd("Malloc failed !\n", 2);
+            exit(2);
+        }
     }
-    printf("\n\nfirst:\n%s\n", str);
-    tab = split_tab(str, '\n', &vars);
-	free(tmp);
+    vars.tab = split_tab(str, '\n', &vars);
+    free(tmp);
 	free(str);
-	print(tab, vars.width, vars.leng);
-	mlx(tab, vars);
+    if (!vars.tab)
+        such_a_quitter(&vars, 2);
+	mlx(vars);
 	return (0);
 }
