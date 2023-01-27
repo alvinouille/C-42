@@ -6,7 +6,7 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:13:44 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/26 21:52:49 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/27 11:34:19 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void    such_a_quitter(t_vars *vars, int flag)
         free(vars->mlx);
     }
     if (flag == 3)
-        ft_putstr_fd("Mlx failed !\n", 2);
+            ft_putstr_fd("Mlx failed !\n", 2);
 	exit(flag);
 }
 

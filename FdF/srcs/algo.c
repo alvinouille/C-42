@@ -6,7 +6,7 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:15:21 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/26 18:54:54 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/27 12:13:05 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,16 @@ t_needle		projection(t_point curr, t_vars *vars)
 	return (point);
 }
 
-void    tracing(t_data img, t_needle **tab, int width, int *length)
+void    tracing(t_vars vars)
 {
     int i = 0;
     int j = 0;
 
-    while (j < width)
+    while (j < vars.width)
     {
-        while (i < length[j] - 1)
+        while (i < vars.leng[j] - 1)
         {
-            bresenham(img, tab[j][i], tab[j][i + 1]);
+            bresenham(vars.img, vars.map[j][i], vars.map[j][i + 1]);
             i++;
         }
         i = 0;
@@ -52,11 +52,11 @@ void    tracing(t_data img, t_needle **tab, int width, int *length)
     }
     i = 0;
     j = 0;
-    while (i < length[j])
+    while (i < vars.leng[j])
     {
-        while (j < width - 1)
+        while (j < vars.width - 1)
         {
-            bresenham(img, tab[j][i], tab[j + 1][i]);
+            bresenham(vars.img, vars.map[j][i], vars.map[j + 1][i]);
             j++;
         }
         j = 0;
@@ -69,10 +69,11 @@ t_needle **create(int *length, int width)
 {
     int i;
     int j;
+    t_needle **tab;
 
     i = 0;
     j = 0;
-    t_needle **tab = malloc(sizeof (t_needle *) * width);
+    tab = malloc(sizeof (t_needle *) * width);
     if (!tab)
         return (NULL);
     while (i < width)
@@ -93,32 +94,30 @@ t_needle **create(int *length, int width)
     return (tab);
 }
 
-t_needle    **quadrillage(int **tab, t_vars *vars)
+void    quadrillage(t_vars *vars)
 {
 	int         x;
 	int         y;
 	t_point     curr;
-	t_needle    **map;
 
 	x = 0;
 	y = 0;
-	map = create(vars->leng, vars->width);
-    if (!map)
-            return (NULL);
+	vars->map = create(vars->leng, vars->width);
+    if (!vars->map)
+            return ;
 	while (y < vars->width)
 	{
 		while (x < vars->leng[y])
 		{
 			curr.x = x;
 			curr.y = y;
-			curr.z = tab[y][x];
-			map[y][x] = projection(curr, vars);
+			curr.z = vars->tab[y][x];
+			vars->map[y][x] = projection(curr, vars);
 			x++;
 		}
 		x = 0;
 		y++;
 	}
-	return (map);
 }
 
 void    black_screen(t_vars *vars)
@@ -132,7 +131,7 @@ void    black_screen(t_vars *vars)
     {
         while (i < LENGTH)
         {
-            img_pixel_put(&(vars->img), i, j, 0x191970);
+            img_pixel_put(&(vars->img), i, j, 0x00000000);
             i++;
         }
         i = 0;
@@ -155,22 +154,20 @@ int closing_mouse(t_vars *vars)
 
 int    fdf(t_vars *vars)
 {
-    t_needle    **map;
     int         i;
 
     i = 0;
-    map = NULL;
     black_screen(vars);
-    map = quadrillage(vars->tab, vars);
-	if (!map)
+    quadrillage(vars);
+	if (!vars->map)
         such_a_quitter(vars, 2);
-    tracing(vars->img, map, vars->width, vars->leng);
+    tracing(*vars);
     while (i < vars->width)
 	{
-		free(map[i]);
+		free(vars->map[i]);
 		i++;
 	}
-    free(map);
+    free(vars->map);
     mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
     return (0);
 }
@@ -192,18 +189,8 @@ int     key_hook(int keycode, t_vars *vars)
     return (0);
 }
 
-void    such_a_quitter(t_vars *vars, int flag)
+void    clean_mlx(t_vars *vars)
 {
-    int     i;
-
-    i = 0;
-    while (i < vars->width)
-	{
-		free(vars->tab[i]);
-		i++;
-	}
-	free(vars->tab);
-    free(vars->leng);
     if (vars->win)
     {
         mlx_clear_window(vars->mlx, vars->win);
@@ -216,6 +203,21 @@ void    such_a_quitter(t_vars *vars, int flag)
         mlx_destroy_display(vars->mlx);
         free(vars->mlx);
     }
+}
+
+void    such_a_quitter(t_vars *vars, int flag)
+{
+    int     i;
+
+    i = 0;
+    while (i < vars->width)
+	{
+		free(vars->tab[i]);
+		i++;
+	}
+	free(vars->tab);
+    free(vars->leng);
+    clean_mlx(vars);
     if (flag == 3)
         ft_putstr_fd("Mlx failed !\n", 2);
     if (flag == 2)
@@ -249,31 +251,10 @@ void	mlx(t_vars vars)
     mlx_loop(vars.mlx);
 }
 
-void	print(int **tab, int width, int *leng)
+int     arg_check(int ac, char **av)
 {
-	int x = 0;
-	int y = 0;
-	while (y < width)
-	{
-		while (x < leng[y])
-		{
-			printf("%d ", tab[y][x]);
-			x++;
-		}
-		printf("\n");
-		x = 0;
-		y++;
-	}
-}
+    int fd;
 
-int main(int ac, char **av)
-{
-    int     fd;
-    char    *str;
-    char    *tmp;
-    t_vars  vars;
-
-    str = NULL;
     if (ac == 1 || ac > 2)
     {
         ft_putstr_fd("  usage: ./fdf <map>\n", 2);
@@ -286,7 +267,16 @@ int main(int ac, char **av)
         perror(" ");
         exit(1);
     }
-	while (1)
+    return (fd);
+}
+
+char    *gnl(int fd)
+{
+    char    *str;
+    char    *tmp;
+
+    str = NULL;
+    while (1)
     {
         tmp = get_next_line(fd, 0);
         if (!tmp)
@@ -299,9 +289,23 @@ int main(int ac, char **av)
             exit(2);
         }
     }
-    vars.tab = split_tab(str, '\n', &vars);
+    if (!tmp && !str)
+        exit(1);
     free(tmp);
-	free(str);
+    return (str);
+}
+
+int main(int ac, char **av)
+{
+    int     fd;
+    char    *str;
+    t_vars  vars;
+
+    fd = arg_check(ac, av);
+    str = gnl(fd);
+    vars.tab = split_tab(str, '\n', &vars);
+	if (str)
+        free(str);
     if (!vars.tab)
             such_a_quitter(&vars, 2);
 	mlx(vars);

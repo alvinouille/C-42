@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   brasenham.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:47:29 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/26 11:31:14 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/27 12:25:16 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,7 @@ void    first(t_data img, t_needle curr, t_needle next)
     while (1)
     {
         if (x < LENGTH && x > 0 && y < WIDTH && y > 0)
-        {
-            if (y < (next.y / 2))
-                img_pixel_put(&img, x, y, 0x00FFFFFF);
-            else
-                img_pixel_put(&img, x, y, 0x0000FF00);
-        }
+            img_pixel_put(&img, x, y, 0x00FFFFFF);
         x++;
         if (x == next.x)
             break;
@@ -62,12 +57,7 @@ void    second(t_data img, t_needle curr, t_needle next)
     while (1)
     {
         if (x < LENGTH && x > 0 && y < WIDTH && y > 0)
-        {
-            if (y < (next.y / 2))
-                img_pixel_put(&img, x, y, 0x00FFFFFF);
-            else
-                img_pixel_put(&img, x, y, 0x0000FF00);
-        }
+            img_pixel_put(&img, x, y, 0x00FFFFFF);
         y++;
         if (y == next.y)
             break;
@@ -91,12 +81,7 @@ void    vertical(t_data img, t_needle curr, t_needle next)
         while (y <= next.y)
         {
             if (x < LENGTH && x > 0 && y < WIDTH && y > 0)
-            {
-            if (y < (next.y) / 2)
                 img_pixel_put(&img, x, y, 0x00FFFFFF);
-            else
-                img_pixel_put(&img, x, y, 0x0000FF00);
-            }
             y++;
         }
     }
@@ -105,12 +90,7 @@ void    vertical(t_data img, t_needle curr, t_needle next)
         while (y >= next.y)
         {
             if (x < LENGTH && x > 0 && y < WIDTH && y > 0)
-            {
-            if (y < (next.y) / 2)
                 img_pixel_put(&img, x, y, 0x00FFFFFF);
-            else
-                img_pixel_put(&img, x, y, 0x0000FF00);
-            }
             y--;
         }
     }
@@ -131,12 +111,7 @@ void    fifth(t_data img, t_needle curr, t_needle next)
     while (1)
     {
         if (x < LENGTH && x > 0 && y < WIDTH && y > 0)
-        {
-            if (y < (next.y) / 2)
-                img_pixel_put(&img, x, y, 0x00FFFFFF);
-            else
-                img_pixel_put(&img, x, y, 0x0000FF00);
-        }
+            img_pixel_put(&img, x, y, 0x00FFFFFF);
         x--;
         if (x == next.x)
             break;
@@ -164,12 +139,7 @@ void    sixth(t_data img, t_needle curr, t_needle next)
     while (1)
     {
         if (x < LENGTH && x > 0 && y < WIDTH && y > 0)
-        {
-            if (y < (next.y) / 2)
-                img_pixel_put(&img, x, y, 0x00FFFFFF);
-            else
-                img_pixel_put(&img, x, y, 0x0000FF00);
-        }
+            img_pixel_put(&img, x, y, 0x00FFFFFF);
         y--;
         if (y == next.y)
             break;
@@ -197,12 +167,7 @@ void    third(t_data img, t_needle curr, t_needle next)
     while (1)
     {
         if (x < LENGTH && x > 0 && y < WIDTH && y > 0)
-        {
-            if (y < (next.y) / 2)
-                img_pixel_put(&img, x, y, 0x00FFFFFF);
-            else
-                img_pixel_put(&img, x, y, 0x0000FF00);
-        }
+            img_pixel_put(&img, x, y, 0x00FFFFFF);
         y++;
         if (y == next.y)
             break;
@@ -230,12 +195,7 @@ void    fourth(t_data img, t_needle curr, t_needle next)
     while (1)
     {
         if (x < LENGTH && x > 0 && y < WIDTH && y > 0)
-        {
-            if (y < (next.y) / 2)
-                img_pixel_put(&img, x, y, 0x00FFFFFF);
-            else
-                img_pixel_put(&img, x, y, 0x0000FF00);
-        }
+            img_pixel_put(&img, x, y, 0x00FFFFFF);
         x--;
         if (x == next.x)
             break;
@@ -263,12 +223,7 @@ void    eight(t_data img, t_needle curr, t_needle next)
     while (1)
     {
         if (x < LENGTH && x > 0 && y < WIDTH && y > 0)
-        {
-            if (y < (next.y) / 2)
-                img_pixel_put(&img, x, y, 0x00FFFFFF);
-            else
-                img_pixel_put(&img, x, y, 0x0000FF00);
-        }
+            img_pixel_put(&img, x, y, 0x00FFFFFF);
         x++;
         if (x == next.x)
             break;
@@ -296,12 +251,7 @@ void    seventh(t_data img, t_needle curr, t_needle next)
     while (1)
     {
         if (x < LENGTH && x > 0 && y < WIDTH && y > 0)
-        {
-            if (y < (next.y) / 2)
-                img_pixel_put(&img, x, y, 0x00FFFFFF);
-            else
-                img_pixel_put(&img, x, y, 0x0000FF00);
-        }
+            img_pixel_put(&img, x, y, 0x00FFFFFF);
         y--;
         if (y == next.y)
             break;
@@ -314,12 +264,58 @@ void    seventh(t_data img, t_needle curr, t_needle next)
     }
 }
 
+static void    going_up(t_data img, t_needle curr, t_needle next, float pente)
+{
+    int x;
+
+    x = curr.x;
+    if (x < next.x)    
+    {
+        if (pente >= 1)
+            second(img, curr, next);
+        else
+            first(img, curr, next);
+    }
+    else if (x == next.x)
+        vertical(img, curr, next);
+    else
+    {
+        if (pente < 1)
+            fifth(img, curr, next);
+        else
+            sixth(img, curr, next);
+    }
+}
+
+static void    going_down(t_data img, t_needle curr, t_needle next, float pente)
+{
+    int     x;
+
+    x = curr.x;
+    if (x < next.x)
+    {
+        if (pente >= -1)
+            eight(img, curr, next);
+        else
+            seventh(img, curr, next);
+    }
+    else
+    {
+        if (pente < -1)
+            third(img, curr, next);
+        else
+            fourth(img, curr, next);
+    }
+}
+
 void    bresenham(t_data img, t_needle curr, t_needle next)
 {
-    int dy = next.y - curr.y;
-    int dx = next.x - curr.x;
-    int x = curr.x;
+    int dy;
+    int dx;
     float pente;
+
+    dy = next.y - curr.y;
+    dx = next.x - curr.x;
     if (dx != 0)
         pente = (float)dy / (float)dx;
     else
@@ -329,39 +325,7 @@ void    bresenham(t_data img, t_needle curr, t_needle next)
             pente = -pente;
     }
     if (pente >= 0)
-    {
-        if (x < next.x)    
-        {
-            if (pente >= 1)
-                second(img, curr, next);
-            else
-                first(img, curr, next);
-        }
-        else if (x == next.x)
-            vertical(img, curr, next);
-        else
-        {
-            if (pente < 1)
-                fifth(img, curr, next);
-            else
-                sixth(img, curr, next);
-        }
-    }
+        going_up(img, curr, next, pente);
     else
-    {
-        if (x < next.x)
-        {
-            if (pente >= -1)
-                eight(img, curr, next);
-            else
-                seventh(img, curr, next);
-        }
-        else
-        {
-            if (pente < -1)
-                third(img, curr, next);
-            else
-                fourth(img, curr, next);
-        }
-    }
+        going_down(img, curr, next, pente);
 }

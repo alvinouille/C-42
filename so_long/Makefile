@@ -33,6 +33,7 @@ clean:
 
 fclean:		clean
 			@${RM} ${NAME}
+			@${RM} ${MLX_LIB}
 
 re:			fclean all
 
