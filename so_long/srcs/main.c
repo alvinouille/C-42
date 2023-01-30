@@ -6,7 +6,7 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:13:44 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/27 11:34:19 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/30 00:09:54 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,8 @@ int action_key(int keycode, t_vars *vars)
     return (1);
 }
 
-void    such_a_quitter(t_vars *vars, int flag)
+void    mlx_destroyer(t_vars *vars)
 {
-    int y;
-
-	y = 0;
-    if (vars->tab)
-	{
-        while (vars->tab[y])
-	    {
-		    free(vars->tab[y]);
-		    y++;
-	    }
-	    free(vars->tab);
-    }
     if (vars->img.player)
         mlx_destroy_image(vars->mlx, vars->img.player);
     if (vars->img.border)
@@ -62,6 +50,23 @@ void    such_a_quitter(t_vars *vars, int flag)
         mlx_destroy_display(vars->mlx);
         free(vars->mlx);
     }
+}
+
+void    such_a_quitter(t_vars *vars, int flag)
+{
+    int y;
+
+	y = 0;
+    if (vars->tab)
+	{
+        while (vars->tab[y])
+	    {
+		    free(vars->tab[y]);
+		    y++;
+	    }
+	    free(vars->tab);
+    }
+    mlx_destroyer(vars);
     if (flag == 3)
             ft_putstr_fd("Mlx failed !\n", 2);
 	exit(flag);
@@ -141,22 +146,28 @@ void    display_game(char **tab, t_vars *vars)
     }
 }
 
-void	mlx(char **tab)
+t_vars  initializing(char **tab)
 {
     t_vars vars;
 
-    int a = 0;
     vars.img.player = NULL;
     vars.img.border = NULL;
     vars.img.background = NULL;
     vars.img.exit = NULL;
     vars.img.collec = NULL;
-
     vars.win = NULL;
     vars.mlx = NULL;
     vars.tab = tab;
     vars.width = width(tab) * 60;
     vars.length = ft_strlen(tab[0]) * 60;
+    return (vars);
+}
+
+void	mlx(char **tab)
+{
+    t_vars vars;
+
+    vars = initializing(tab);
     vars.mlx = mlx_init();
     if (!vars.mlx)
         such_a_quitter(&vars, 3);
@@ -166,8 +177,7 @@ void	mlx(char **tab)
     game_init(&vars);
     display_game(vars.tab, &vars);
     mlx_hook(vars.win, 2, 1L<<0, action_key, &vars);
-    a += mlx_hook(vars.win, 17, 1L<<5, closing_mouse, &vars);
-    printf("%d\n", a);
+    mlx_hook(vars.win, 17, 1L<<5, closing_mouse, &vars);
     mlx_loop(vars.mlx);
 }
 
@@ -195,18 +205,10 @@ void    free_tab(char **tab)
     free(tab);
 }
 
-int main(int ac, char **av)
+static int     arg_check(int ac, char **av)
 {
-    
-    int     fd;
-    char     **tab;
-    char    *str;
-    char *tmp;
-    char **tmtab;
-    int     size;
+    int fd;
 
-    str = NULL;
-    size = 0;
     if (ac == 1 || ac > 2)
     {
         ft_putstr_fd("  usage: ./so_long <map>\n", 2);
@@ -216,52 +218,87 @@ int main(int ac, char **av)
     if (fd == 0 || fd == -1)
     {
         ft_putstr_fd(av[1], 2);
-        close(fd);
         perror(" ");
         exit(1);
     }
-	while (1)
+    return (fd);
+}
+
+static void    clean_leaving_gnl(char *tmp, char *str, int fd)
+{
+    free(tmp);
+    free(str);
+    get_next_line(fd, 1);
+    close(fd);
+    ft_putstr_fd("Error\nInvalid map !\n", 2);
+    exit(3);
+}
+
+static char    *gnl(int fd)
+{
+    char    *str;
+    char    *tmp;
+
+    str = NULL;
+    while (1)
     {
         tmp = get_next_line(fd, 0);
         if (!tmp)
             break;
         if (tmp[0] == '\n')
-        {
-            free(tmp);
-            free(str);
-            get_next_line(fd, 1);
-            close(fd);
-            printf("KO !");
-            return (0);
-        }
+            clean_leaving_gnl(tmp, str, fd);
         str = ft_strjoin(str, tmp);
         if (!str)
-            exit(1);
-		size++;
+        {
+            free(tmp);
+            ft_putstr_fd("Malloc failed !\n", 2);
+            exit(2);
+        }
     }
+    if (!tmp && !str)
+        exit(1);
+    free(tmp);
+    return (str);
+}
+
+static void    freeer(char **tab, char **tmp, char *str, int fd)
+{
+       free(str);
+       free_tab(tmp);
+       if (fd < 0)
+       {
+            fd = -fd;
+            free_tab(tab);
+            close(fd);
+            ft_putstr_fd("Error\nInvalid map !\n", 2);
+            exit(3);
+       }
+       close(fd);
+}
+
+int main(int ac, char **av)
+{
+    int     fd;
+    char     **tab;
+    char    *str;
+    char **tmp;
+
+    str = NULL;
+    fd = arg_check(ac, av);
+    str = gnl(fd);
     tab = ft_split(str, '\n');
     if (!tab)
     {
-        printf("KO !");
-        close(fd);
-        return (0);
-    }
-	free(tmp);
-	// print(tab);
-    tmtab = ft_split(str, '\n');
-    if (is_ok(tab, tmtab) == 0)
-    {
         free(str);
-        free_tab(tab);
-        free_tab(tmtab);
         close(fd);
-        printf("Error\nInvalid map !\n");
-        return (0);
+        ft_putstr_fd("Malloc failed !", 2);
+        exit(2);
     }
-    free(str);
-    free_tab(tmtab);
+    tmp = ft_split(str, '\n');
+    if (is_ok(tab, tmp) == 0)
+        freeer(tab, tmp, str, -fd);
+    freeer(tab, tmp, str, fd);
 	mlx(tab);
     free_tab(tab);
-    close(fd);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:20:14 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/26 21:37:44 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/30 00:12:08 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,40 @@ char	*ft_strjoin(char *s1, char *s2);
 //      PARSING
 int is_ok(char **tab, char **tmp);
 int is_rectangular(char **tab);
-int cep_check(char **tab);
+int cep_check(char **tab, int e, int p, int c);
 int wrong_char(char **tab);
 int check_col(char **tab);
 int check_line(char *str);
 int is_closed(char **tab);
-int is_valid(char **tab);
+
+//		INUTILS
 void	print(char **tab);
 
 //		MOVE
+int    c_left(t_vars *vars);
+void    up_and_down(t_vars *vars, int x, int x2, int y);
+void    left_and_right(t_vars *vars, int x, int y, int y2);
 void    move_up(t_vars *vars);
 void    move_down(t_vars *vars);
 void    move_right(t_vars *vars);
 void    move_left(t_vars *vars);
 
-//		DISPLAY_MAP
+//		VALIDITY_PATH
+int char_check(char **tab, char c1, char c2);
+int     px_check(char **tab, int i);
+void change_line(char *str, int pos, int *change);
+void change_col(char **tab, int i, int pos, int *change);
+int changing(char **tab);
+int is_valid(char **tab);
+
+//		MAIN
+int action_key(int keycode, t_vars *vars);
+int closing_mouse(t_vars *vars);
+int     width(char **tab);
+void    game_init(t_vars *vars);
 void    display_img(char c, int x, int y, t_vars *vars);
 void    display_game(char **tab, t_vars *vars);
+void	mlx(char **tab);
 
 //		TRASH
 void    such_a_quitter(t_vars *vars, int flag);

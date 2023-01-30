@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   validity.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 14:59:14 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/25 17:25:44 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/28 19:03:55 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static int char_check(char **tab, char c1, char c2)
+int char_check(char **tab, char c1, char c2)
 {
     int i;
     int j;
@@ -33,7 +33,7 @@ static int char_check(char **tab, char c1, char c2)
     return (0);
 }
 
-static int     px_check(char **tab, int i)
+int     px_check(char **tab, int i)
 {
     int j;
 
@@ -57,7 +57,7 @@ static int     px_check(char **tab, int i)
 }
 
 
-static void change_line(char *str, int pos, int *change)
+void change_line(char *str, int pos, int *change)
 {
     if (str[pos + 1] == '0' || str[pos + 1] == 'C')
     {
@@ -81,7 +81,7 @@ static void change_line(char *str, int pos, int *change)
     }
 }
 
-static void change_col(char **tab, int i, int pos, int *change)
+void change_col(char **tab, int i, int pos, int *change)
 {
     if (tab[i - 1][pos] == '0' || tab[i - 1][pos] == 'C')
     {
@@ -105,7 +105,7 @@ static void change_col(char **tab, int i, int pos, int *change)
     }
 }
 
-static int changing(char **tab)
+int changing(char **tab)
 {
     int i;
     int pos;
@@ -139,7 +139,6 @@ int is_valid(char **tab)
         change = 0;
         change = changing(tab);
     }
-    // print(tab);
     if (char_check(tab, 'C', 'E'))
         return (0);
     return (1);

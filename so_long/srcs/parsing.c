@@ -6,7 +6,7 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:54:40 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/26 20:19:41 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/30 00:11:44 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int is_ok(char **tab, char **tmp)
         return (0);
     if (!wrong_char(tab))
         return (0);
-    if (!cep_check(tab))
+    if (!cep_check(tab, 0, 0, 0))
         return (0);
     if (!is_closed(tab))
         return (0);
@@ -92,17 +92,11 @@ int wrong_char(char **tab)
     return (1);
 }
 
-int cep_check(char **tab)
+int cep_check(char **tab, int e, int p, int c)
 {
     int i;
     int j;
-    int c;
-    int e;
-    int p;
 
-    e = 0;
-    p = 0;
-    c = 0;
     i = 0;
     j = 0;
     while (tab[i])
