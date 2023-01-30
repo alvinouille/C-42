@@ -6,7 +6,7 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:31:09 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/26 21:44:21 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/30 17:55:01 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,30 @@ void	ft_bzero(void *s, size_t n)
 		*(str++) = '\0';
 		n--;
 	}
+}
+
+char	*ft_strnstr(const char *big, const char *little, size_t len)
+{
+	size_t	i;
+	size_t	j;
+
+	j = 0;
+	i = 0;
+	if (little[0] == '\0')
+		return ((char *)big);
+	while (big[i] && i < len)
+	{
+		j = 0;
+		while (big[i + j] == little[j]
+			&& (i + j) < len && big[i + j])
+		{
+			j++;
+			if (little[j] == '\0')
+			{
+				return ((char *)&big[i]);
+			}
+		}
+		i++;
+	}
+	return (0);
 }

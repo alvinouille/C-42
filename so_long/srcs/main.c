@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:13:44 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/30 16:50:08 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/30 17:54:11 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,19 @@ void    free_tab(char **tab)
     free(tab);
 }
 
+static int  format(char *str)
+{
+    int size;
+
+    size = ft_strlen(str);
+    if (size < 4)
+        return (0);
+    if (ft_strnstr(&str[size - 4], ".ber", 4) != 0)
+        return (1);
+    else
+        return (0);
+}
+
 static int     arg_check(int ac, char **av)
 {
     int fd;
@@ -214,6 +227,11 @@ static int     arg_check(int ac, char **av)
     if (ac == 1 || ac > 2)
     {
         ft_putstr_fd("  usage: ./so_long <map>\n", 2);
+        exit(1);
+    }
+    if (format(av[1]) == 0)
+    {
+        ft_putstr_fd("Error\nInvalif format\n" , 2);
         exit(1);
     }
     fd = open(av[1], O_RDONLY);

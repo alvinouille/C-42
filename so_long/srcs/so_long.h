@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:20:14 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/30 15:04:39 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/01/30 17:55:11 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ char	**ft_split(char const *s, char c);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_bzero(void *s, size_t n);
 char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strnstr(const char *big, const char *little, size_t len);
 
 //      PARSING
 int is_ok(char **tab, char **tmp);
