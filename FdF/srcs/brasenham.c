@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   brasenham.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:47:29 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/28 13:13:18 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/30 15:30:42 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,39 +299,7 @@ static void    going_down(t_data img, t_needle curr, t_needle next, float pente)
         else
             seventh(img, curr, next);
     }
-    elsevoid    up_and_down(t_vars *vars, int x, int x2, int y)
-// {
-//     if (vars->tab[x][y] == 'E' && c_left(vars) == 0)
-//     {
-//         vars->tab[x][y] = 'P';
-//         vars->tab[x2][y] = '0';
-//         display_game(vars->tab, vars);
-//         such_a_quitter(vars, 0);
-//     }
-//     else if (vars->tab[x][y] != 'E')
-//     {
-//         vars->tab[x][y] = 'P';
-//         vars->tab[x2][y] = '0';
-//         display_game(vars->tab, vars);
-//     }
-// }
-
-// void    left_and_right(t_vars *vars, int x, int y, int y2)
-// {
-//     if (vars->tab[x][y] == 'E' && c_left(vars) == 0)
-//     {
-//         vars->tab[x][y] = 'P';
-//         vars->tab[x][y2] = '0';
-//         display_game(vars->tab, vars);
-//         such_a_quitter(vars, 0);
-//     }
-//     else if (vars->tab[x][y] != 'E')
-//     {
-//         vars->tab[x][y] = 'P';
-//         vars->tab[x][y2] = '0';
-//         display_game(vars->tab, vars);
-//     }
-// }
+    else
     {
         if (pente < -1)
             third(img, curr, next);

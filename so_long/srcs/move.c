@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 20:04:24 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/28 19:08:19 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/30 15:10:24 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,14 @@ int    c_left(t_vars *vars)
     return (0);
 }
 
-void    up_and_down(t_vars *vars, int x, int x2, int y)
+int    up_and_down(t_vars *vars, int x, int x2, int y, int a)
 {
     if (vars->tab[x][y] == 'E' && c_left(vars) == 0)
     {
         vars->tab[x][y] = 'P';
         vars->tab[x2][y] = '0';
         display_game(vars->tab, vars);
+        printf("moves : %d\n", a);
         such_a_quitter(vars, 0);
     }
     else if (vars->tab[x][y] != 'E')
@@ -47,16 +48,20 @@ void    up_and_down(t_vars *vars, int x, int x2, int y)
         vars->tab[x][y] = 'P';
         vars->tab[x2][y] = '0';
         display_game(vars->tab, vars);
+        printf("moves : %d\n", a);
+        return (1);
     }
+    return (0);
 }
 
-void    left_and_right(t_vars *vars, int x, int y, int y2)
+int    left_and_right(t_vars *vars, int x, int y, int y2, int a)
 {
     if (vars->tab[x][y] == 'E' && c_left(vars) == 0)
     {
         vars->tab[x][y] = 'P';
         vars->tab[x][y2] = '0';
         display_game(vars->tab, vars);
+        printf("moves : %d\n", a);
         such_a_quitter(vars, 0);
     }
     else if (vars->tab[x][y] != 'E')
@@ -64,10 +69,13 @@ void    left_and_right(t_vars *vars, int x, int y, int y2)
         vars->tab[x][y] = 'P';
         vars->tab[x][y2] = '0';
         display_game(vars->tab, vars);
+        printf("moves : %d\n", a);
+        return (1);
     }
+    return (0);
 }
 
-void    move_up(t_vars *vars)
+int    move_up(t_vars *vars, int a)
 {
     int i;
     int j;
@@ -81,17 +89,18 @@ void    move_up(t_vars *vars)
             if (vars->tab[i][j] == 'P')
             {
                 if (vars->tab[i - 1][j] != '1')
-                    up_and_down(vars, i - 1, i, j);
-                return ;
+                    return (up_and_down(vars, i - 1, i, j, a));
+                return (0);
             }
             j++;
         }
         j = 0;
         i++;
     }
+    return (0);
 }
 
-void    move_down(t_vars *vars)
+int    move_down(t_vars *vars, int a)
 {
     int i;
     int j;
@@ -105,17 +114,18 @@ void    move_down(t_vars *vars)
             if (vars->tab[i][j] == 'P')
             {
                 if (vars->tab[i + 1][j] != '1')
-                    up_and_down(vars, i + 1, i, j);
-                return ;
+                    return (up_and_down(vars, i + 1, i, j, a));
+                return (0);
             }
             j++;
         }
         j = 0;
         i++;
     }
+    return (0);
 }
 
-void    move_left(t_vars *vars)
+int    move_left(t_vars *vars, int a)
 {
     int i;
     int j;
@@ -129,17 +139,18 @@ void    move_left(t_vars *vars)
             if (vars->tab[i][j] == 'P')
             {
                 if (vars->tab[i][j - 1] != '1')
-                    left_and_right(vars, i, j - 1, j);
-                return ;
+                    return (left_and_right(vars, i, j - 1, j, a));
+                return (0);
             }
             j++;
         }
         j = 0;
         i++;
     }
+    return (0);
 }
 
-void    move_right(t_vars *vars)
+int    move_right(t_vars *vars, int a)
 {
     int i;
     int j;
@@ -153,12 +164,13 @@ void    move_right(t_vars *vars)
             if (vars->tab[i][j] == 'P')
             {
                 if (vars->tab[i][j + 1] != '1')
-                    left_and_right(vars, i, j + 1, j);
-                return ;
+                    return (left_and_right(vars, i, j + 1, j, a));
+                return (0);
             }
             j++;
         }
         j = 0;
         i++;
     }
+    return (0);
 }

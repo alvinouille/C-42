@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:13:44 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/30 00:09:54 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/30 16:50:08 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,18 @@
 
 int action_key(int keycode, t_vars *vars)
 {
+    static int a = 1;
+
 	if (keycode == 65307)
         such_a_quitter(vars, 0);
     else if (keycode == XK_w)
-        move_up(vars);
+        a += move_up(vars, a);
     else if (keycode == XK_a)
-        move_left(vars);
+        a += move_left(vars, a);
     else if (keycode == XK_s)
-        move_down(vars);
+        a += move_down(vars, a);
     else if (keycode == XK_d)
-        move_right(vars);
+        a += move_right(vars, a);
     return (1);
 }
 

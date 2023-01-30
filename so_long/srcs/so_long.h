@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:20:14 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/30 00:12:08 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/30 15:04:39 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ void	print(char **tab);
 
 //		MOVE
 int    c_left(t_vars *vars);
-void    up_and_down(t_vars *vars, int x, int x2, int y);
-void    left_and_right(t_vars *vars, int x, int y, int y2);
-void    move_up(t_vars *vars);
-void    move_down(t_vars *vars);
-void    move_right(t_vars *vars);
-void    move_left(t_vars *vars);
+int    up_and_down(t_vars *vars, int x, int x2, int y, int a);
+int    left_and_right(t_vars *vars, int x, int y, int y2, int a);
+int    move_up(t_vars *vars, int a);
+int    move_down(t_vars *vars, int a);
+int    move_right(t_vars *vars, int a);
+int    move_left(t_vars *vars, int a);
 
 //		VALIDITY_PATH
 int char_check(char **tab, char c1, char c2);

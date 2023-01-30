@@ -37,5 +37,7 @@ fclean:		clean
 
 re:			fclean all
 
+malloc_test: $(OBJS) $(MLX_LIB)
+	$(CC) $(CFLAGS) -fsanitize=undefined -rdynamic -o $@ ${OBJS} $(MLX_LIB) -L. -lmallocator $(MLX_FLAGS)
 
 .PHONY: all clean fclean re
