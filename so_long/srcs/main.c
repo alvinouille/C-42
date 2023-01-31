@@ -6,7 +6,7 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:13:44 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/30 17:54:11 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/31 14:34:32 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ void    free_tab(char **tab)
     free(tab);
 }
 
-static int  format(char *str)
+int  format(char *str)
 {
     int size;
 
@@ -220,7 +220,7 @@ static int  format(char *str)
         return (0);
 }
 
-static int     arg_check(int ac, char **av)
+int     arg_check(int ac, char **av)
 {
     int fd;
 
@@ -231,7 +231,7 @@ static int     arg_check(int ac, char **av)
     }
     if (format(av[1]) == 0)
     {
-        ft_putstr_fd("Error\nInvalif format\n" , 2);
+        ft_putstr_fd("Error\nInvalid format\n" , 2);
         exit(1);
     }
     fd = open(av[1], O_RDONLY);
@@ -244,7 +244,7 @@ static int     arg_check(int ac, char **av)
     return (fd);
 }
 
-static void    clean_leaving_gnl(char *tmp, char *str, int fd)
+void    clean_leaving_gnl(char *tmp, char *str, int fd)
 {
     free(tmp);
     free(str);
@@ -254,7 +254,7 @@ static void    clean_leaving_gnl(char *tmp, char *str, int fd)
     exit(3);
 }
 
-static char    *gnl(int fd)
+char    *gnl(int fd)
 {
     char    *str;
     char    *tmp;
@@ -270,30 +270,40 @@ static char    *gnl(int fd)
         str = ft_strjoin(str, tmp);
         if (!str)
         {
-            free(tmp);
+            close(fd);
+            get_next_line(fd, 1);
             ft_putstr_fd("Malloc failed !\n", 2);
             exit(2);
         }
     }
     if (!tmp && !str)
+    {
+        close(fd);
         exit(1);
+    }
     free(tmp);
+    close(fd);
     return (str);
 }
 
-static void    freeer(char **tab, char **tmp, char *str, int fd)
+void    free_machine(char **tab, char **tmp, char *str)
 {
-       free(str);
-       free_tab(tmp);
-       if (fd < 0)
-       {
-            fd = -fd;
+    if (str)
+        free(str);
+    if (!tmp)
+    {
+        if (tab)
             free_tab(tab);
-            close(fd);
-            ft_putstr_fd("Error\nInvalid map !\n", 2);
-            exit(3);
-       }
-       close(fd);
+        ft_putstr_fd("Error\nMalloc failed !\n", 2);
+        exit(2);
+    }
+    free_tab(tmp);
+    if (tab)
+    {
+        free_tab(tab);
+        ft_putstr_fd("Error\nInvalid map !\n", 2);
+        exit(3);
+    }
 }
 
 int main(int ac, char **av)
@@ -308,16 +318,13 @@ int main(int ac, char **av)
     str = gnl(fd);
     tab = ft_split(str, '\n');
     if (!tab)
-    {
-        free(str);
-        close(fd);
-        ft_putstr_fd("Malloc failed !", 2);
-        exit(2);
-    }
+        free_machine(NULL, NULL, str);
     tmp = ft_split(str, '\n');
+    if (!tmp)
+        free_machine(tab, NULL, str);
     if (is_ok(tab, tmp) == 0)
-        freeer(tab, tmp, str, -fd);
-    freeer(tab, tmp, str, fd);
+        free_machine(tab, tmp, str);
+    free_machine(NULL, tmp, str);
 	mlx(tab);
     free_tab(tab);
 	return (0);

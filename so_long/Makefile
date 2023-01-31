@@ -10,9 +10,9 @@ SRCS			=	srcs/main.c \
 					srcs/get_next_line_utils.c 
 
 OBJS    		= $(SRCS:.c=.o)
-CC				= cc
+CC				= clang
 RM				= rm -rf
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -Wall -Wextra -Werror -g
 MLX_FLAGS 		= -lX11 -lXext -lm
 MLX_DIR			= mlx
 MLX_LIB			= mlx/libmlx_Linux.a

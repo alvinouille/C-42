@@ -6,7 +6,7 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:30:30 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/26 21:43:54 by alvina           ###   ########.fr       */
+/*   Updated: 2023/01/31 13:13:12 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static char	**free_tab(char **tab, int j)
 		free(tab[i]);
 		i++;
 	}
+	free(tab);
 	return (NULL);
 }
 
@@ -71,7 +72,7 @@ static char	**splitting(char **tab, char const *s, char c)
 		if (s[i] != c)
 		{
 			tab[j] = malloc(sizeof(char) * (length_words(&s[i], c) + 1));
-			if (!tab)
+			if (!tab[j])
 				return (free_tab(tab, j));
 			k = 0;
 			while (s[i] != c && s[i])
