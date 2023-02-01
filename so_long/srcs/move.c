@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 20:04:24 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/30 15:10:24 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/01 21:04:35 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,106 +71,6 @@ int    left_and_right(t_vars *vars, int x, int y, int y2, int a)
         display_game(vars->tab, vars);
         printf("moves : %d\n", a);
         return (1);
-    }
-    return (0);
-}
-
-int    move_up(t_vars *vars, int a)
-{
-    int i;
-    int j;
-
-    i = 0;
-    j = 0;
-    while (vars->tab[i])
-    {
-        while (vars->tab[i][j])
-        {
-            if (vars->tab[i][j] == 'P')
-            {
-                if (vars->tab[i - 1][j] != '1')
-                    return (up_and_down(vars, i - 1, i, j, a));
-                return (0);
-            }
-            j++;
-        }
-        j = 0;
-        i++;
-    }
-    return (0);
-}
-
-int    move_down(t_vars *vars, int a)
-{
-    int i;
-    int j;
-
-    i = 0;
-    j = 0;
-    while (vars->tab[i])
-    {
-        while (vars->tab[i][j])
-        {
-            if (vars->tab[i][j] == 'P')
-            {
-                if (vars->tab[i + 1][j] != '1')
-                    return (up_and_down(vars, i + 1, i, j, a));
-                return (0);
-            }
-            j++;
-        }
-        j = 0;
-        i++;
-    }
-    return (0);
-}
-
-int    move_left(t_vars *vars, int a)
-{
-    int i;
-    int j;
-
-    i = 0;
-    j = 0;
-    while (vars->tab[i])
-    {
-        while (vars->tab[i][j])
-        {
-            if (vars->tab[i][j] == 'P')
-            {
-                if (vars->tab[i][j - 1] != '1')
-                    return (left_and_right(vars, i, j - 1, j, a));
-                return (0);
-            }
-            j++;
-        }
-        j = 0;
-        i++;
-    }
-    return (0);
-}
-
-int    move_right(t_vars *vars, int a)
-{
-    int i;
-    int j;
-
-    i = 0;
-    j = 0;
-    while (vars->tab[i])
-    {
-        while (vars->tab[i][j])
-        {
-            if (vars->tab[i][j] == 'P')
-            {
-                if (vars->tab[i][j + 1] != '1')
-                    return (left_and_right(vars, i, j + 1, j, a));
-                return (0);
-            }
-            j++;
-        }
-        j = 0;
-        i++;
     }
     return (0);
 }

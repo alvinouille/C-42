@@ -6,13 +6,13 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:30:30 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/31 13:13:12 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/01 21:18:56 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static char	**free_tab(char **tab, int j)
+static char	**free_tabb(char **tab, int j)
 {
 	int	i;
 
@@ -73,7 +73,7 @@ static char	**splitting(char **tab, char const *s, char c)
 		{
 			tab[j] = malloc(sizeof(char) * (length_words(&s[i], c) + 1));
 			if (!tab[j])
-				return (free_tab(tab, j));
+				return (free_tabb(tab, j));
 			k = 0;
 			while (s[i] != c && s[i])
 				tab[j][k++] = s[i++];

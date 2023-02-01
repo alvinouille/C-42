@@ -6,7 +6,7 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:54:40 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/30 00:11:44 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/01 21:05:18 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,36 +24,6 @@ int is_ok(char **tab, char **tmp)
         return (0);
     if (!is_valid(tmp))
         return (0);
-    return (1);
-}
-
-int check_col(char **tab)
-{
-    int i;
-    int len;
-
-    i = 0;
-    len = ft_strlen(tab[0]);
-    while (tab[i])
-    {
-        if (tab[i][0] != '1' || tab[i][len - 1] != '1')
-            return (0);
-        i++;
-    }
-    return (1);
-}
-
-int check_line(char *str)
-{
-    int i;
-
-    i = 0;
-    while (str[i])
-    {
-        if (str[i] != '1')
-            return (0);
-        i++;
-    }
     return (1);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 18:45:58 by ale-sain          #+#    #+#             */
-/*   Updated: 2022/12/19 19:44:59 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/01 14:21:11 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,21 @@ char	*ft_strjoin_modif(char *keep, char *buff)
 	if (!keep)
 	{
 		keep = malloc(1);
+		if (!keep)
+			return (NULL);
 		keep[0] = '\0';
 	}
 	if (!buff)
+	{
+		free(keep);
 		return (NULL);
+	}
 	str = malloc(ft_strlen(keep) + ft_strlen(buff) + 1);
 	if (!str)
+	{
+		free(keep);
 		return (NULL);
+	}
 	while (keep[++i])
 		str[i] = keep[i];
 	while (buff[j])
@@ -46,13 +54,18 @@ char	*loopin(int fd, char **keep)
 
 	buff = malloc((BUFFER_SIZE + 1));
 	if (!buff)
+	{
+		if (*keep)
+			free(*keep);
 		return (NULL);
+	}
 	size = 1;
 	while (!ft_strchr((*keep), '\n') && size != 0)
 	{
 		size = read(fd, buff, BUFFER_SIZE);
 		if (size == (size_t) - 1)
 		{
+			free(*keep);
 			free(buff);
 			return (NULL);
 		}
@@ -63,14 +76,16 @@ char	*loopin(int fd, char **keep)
 	return (*keep);
 }
 
+#include <stdio.h>
 char	*get_next_line(int fd, int flag)
 {
 	char		*line;
 	static char	*keep;
-	
+
 	if (flag == 1)
 	{
-		free(keep);
+		if (keep)
+			free(keep);
 		return (NULL);
 	}
 	if (fd < 0 || BUFFER_SIZE <= 0)
@@ -78,7 +93,17 @@ char	*get_next_line(int fd, int flag)
 	if (loopin(fd, &keep))
 	{
 		line = ft_line(keep);
+		if (!line)
+		{
+			free(keep);
+			return (NULL);
+		}
 		keep = ft_keep_memory(keep);
+		if (!keep)
+		{
+			free(line);
+			return (NULL);
+		}
 		return (line);
 	}
 	else

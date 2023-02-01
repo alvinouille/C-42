@@ -1,29 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   algo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/25 13:13:44 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/02/01 21:15:59 by alvina           ###   ########.fr       */
+/*   Created: 2023/01/17 13:15:21 by ale-sain          #+#    #+#             */
+/*   Updated: 2023/02/01 20:32:42 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
-
-int  format(char *str)
-{
-    int size;
-
-    size = ft_strlen(str);
-    if (size < 4)
-        return (0);
-    if (ft_strnstr(&str[size - 4], ".ber", 4) != 0)
-        return (1);
-    else
-        return (0);
-}
+#include "fdf.h"
+# define LENGTH 1920
+# define WIDTH 1080
 
 int     arg_check(int ac, char **av)
 {
@@ -31,12 +20,7 @@ int     arg_check(int ac, char **av)
 
     if (ac == 1 || ac > 2)
     {
-        ft_putstr_fd("  usage: ./so_long <map>\n", 2);
-        exit(1);
-    }
-    if (format(av[1]) == 0)
-    {
-        ft_putstr_fd("Error\nInvalid format\n" , 2);
+        ft_putstr_fd("  usage: ./fdf <map>\n", 2);
         exit(1);
     }
     fd = open(av[1], O_RDONLY);
@@ -60,13 +44,11 @@ char    *gnl(int fd)
         tmp = get_next_line(fd, 0);
         if (!tmp)
             break;
-        if (tmp[0] == '\n')
-            clean_leaving_gnl(tmp, str, fd);
         str = ft_strjoin(str, tmp);
         if (!str)
         {
-            close(fd);
             get_next_line(fd, 1);
+            close(fd);
             ft_putstr_fd("Malloc failed !\n", 2);
             exit(2);
         }
@@ -84,23 +66,21 @@ char    *gnl(int fd)
 int main(int ac, char **av)
 {
     int     fd;
-    char     **tab;
     char    *str;
-    char **tmp;
+    t_vars  vars;
+    int     flag;
 
     str = NULL;
     fd = arg_check(ac, av);
     str = gnl(fd);
-    tab = ft_split(str, '\n');
-    if (!tab)
-        free_machine(NULL, NULL, str);
-    tmp = ft_split(str, '\n');
-    if (!tmp)
-        free_machine(tab, NULL, str);
-    if (is_ok(tab, tmp) == 0)
-        free_machine(tab, tmp, str);
-    free_machine(NULL, tmp, str);
-	mlx(tab);
-    free_tab(tab);
+    flag = split_tab(str, '\n', &vars);
+	if (str)
+        free(str);
+    vars.win = NULL;
+    vars.mlx = NULL;
+    vars.img.img = NULL;
+    if (!flag || flag == 2)
+            such_a_quitter(&vars, 2);
+	mlx(vars);
 	return (0);
 }

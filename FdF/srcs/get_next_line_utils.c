@@ -6,7 +6,7 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 16:32:35 by ale-sain          #+#    #+#             */
-/*   Updated: 2022/11/23 08:08:13 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/01 14:22:03 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,10 @@ char	*ft_keep_memory(char *keep)
 	}
 	str = malloc((ft_strlen(keep) - i + 1));
 	if (!str)
+	{
+		free(keep);
 		return (NULL);
+	}
 	i++;
 	while (keep[i])
 		str[j++] = keep[i++];

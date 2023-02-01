@@ -2,6 +2,10 @@ NAME			= so_long
 
 SRCS			=	srcs/main.c \
 					srcs/move.c \
+					srcs/move2.c \
+					srcs/mlx.c \
+					srcs/display.c \
+					srcs/trash.c \
 					srcs/parsing.c \
 					srcs/split.c \
 					srcs/utils.c \
@@ -10,7 +14,7 @@ SRCS			=	srcs/main.c \
 					srcs/get_next_line_utils.c 
 
 OBJS    		= $(SRCS:.c=.o)
-CC				= clang
+CC				= cc
 RM				= rm -rf
 CFLAGS			= -Wall -Wextra -Werror -g
 MLX_FLAGS 		= -lX11 -lXext -lm

@@ -6,43 +6,13 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:18:32 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/26 18:13:26 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/01 20:38:30 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static int	**free_tab(int **tab, int j)
-{
-	int	i;
-
-	i = 0;
-	while (i < j)
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-	return (0);
-}
-
-static int	tab_width(char *str, char c)
-{
-	int	i;
-	int	nb;
-
-	i = 0;
-	nb = 1;
-	while (str[i])
-	{
-		if (str[i] == c && str[i + 1] != '\0')
-			nb++;
-		i++;
-	}
-	return (nb);
-}
-
-static int	tab_length(char *str, char c)
+int	tab_length(char *str, char c)
 {
 	int	i;
 	int	nb;
@@ -69,7 +39,7 @@ static int	tab_length(char *str, char c)
 	return (nb);
 }
 
-static int	curr_length(char *str, char c)
+int	curr_length(char *str, char c)
 {
 	int	i;
 
@@ -91,52 +61,57 @@ static int	curr_length(char *str, char c)
 	return (i);
 }
 
-static int	**splitting(int **tab, char *s, char c, t_vars *vars)
+int	splitting(char *s, char c, t_vars *vars)
 {
 	int	k;
-	int	j;
 	int	i;
 
 	i = 0;
-	j = 0;
+	vars->width = 0;
 	while (s[i])
 	{
 		if (s[i] != c && ((s[i] >= '0' && s[i] <= '9') || s[i] == '-'))
 		{
-			tab[j] = malloc(sizeof(int) * tab_length(&s[i], c));
-			if (!tab)
-				return (free_tab(tab, j));
-			vars->leng[j] = tab_length(&s[i], c);
+			vars->tab[vars->width] = malloc(sizeof(int) * tab_length(&s[i], c));
+			if (!vars->tab[vars->width])
+			{
+				free_tab(vars->tab, vars->width);
+				return (0);
+			}
+			vars->leng[vars->width] = tab_length(&s[i], c);
 			k = 0;
 			while (s[i] != c && s[i])
 			{
-				tab[j][k] = ft_atoi(&s[i]);
+				vars->tab[vars->width][k] = ft_atoi(&s[i]);
 				k++;
 				i += curr_length(&s[i], c);
 			}
-			j++;
+			vars->width++;
 		}
 		else
 			i++;
 	}
-	return (tab);
+	return (1);
 }
 
-int	**split_tab(char *s, char c, t_vars *vars)
+int	split_tab(char *s, char c, t_vars *vars)
 {
-	int		**tab;
 	int     width;
 
 	if (!s)
 		return (0);
 	width = tab_width(s, c);
-	tab = (int **) malloc(sizeof(int *) * width);
+	vars->tab = (int **) malloc(sizeof(int *) * width);
 	vars->leng = (int *) malloc(sizeof(int) * width);
-	if (!tab)
-		return (NULL);
+	if (!vars->tab)
+		return (0);
 	if (!vars->leng)
-		return (NULL);
-	tab = splitting(tab, s, c, vars);
-	vars->width = width;
-	return (tab);
+	{
+		vars->width = 0;
+		cleaning_tab(vars);
+		return (0);
+	}
+	if (!splitting(s, c, vars))
+		return (2);
+	return (1);
 }
