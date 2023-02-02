@@ -64,12 +64,8 @@ int	arg_check(int ac, char **av)
 	return (fd);
 }
 
-char	*gnl(int fd)
+char	*gnl(int fd, char *str, char *tmp)
 {
-	char	*str;
-	char	*tmp;
-
-	str = NULL;
 	while (1)
 	{
 		tmp = get_next_line(fd, 0);
@@ -88,7 +84,10 @@ char	*gnl(int fd)
 	}
 	close(fd);
 	if (!tmp && !str)
+	{
+		ft_putstr_fd("Error\nEmpty map or repository !\n", 2);
 		exit(1);
+	}
 	free(tmp);
 	return (str);
 }
@@ -98,11 +97,13 @@ int	main(int ac, char **av)
 	int		fd;
 	char	**tab;
 	char	*str;
+	char	*t;
 	char	**tmp;
 
 	str = NULL;
+	t = NULL;
 	fd = arg_check(ac, av);
-	str = gnl(fd);
+	str = gnl(fd, str, t);
 	tab = ft_split(str, '\n');
 	if (!tab)
 		free_machine(NULL, NULL, str);

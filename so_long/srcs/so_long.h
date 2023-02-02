@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 09:30:23 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/02/02 10:14:03 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/02 11:13:59 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_putchar_fd(char c, int fd);
 //		PRE_CHECK
 int		format(char *str);
 int		arg_check(int ac, char **av);
-char	*gnl(int fd);
+char	*gnl(int fd, char *str, char *t);
 
 //		 PARSING
 int		is_ok(char **tab, char **tmp);
