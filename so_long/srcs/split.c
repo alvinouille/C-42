@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:30:30 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/02/01 21:18:56 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/02 09:34:42 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,10 @@ char	**ft_split(char const *s, char c)
 {
 	char	**tab;
 
-    if (!s)
-        	return (0);
+	if (!s)
+		return (0);
 	if (count_words(s, c) == 0)
-			return (0);
+		return (0);
 	tab = (char **) malloc(sizeof(char *) * (count_words(s, c) + 1));
 	if (!tab)
 		return (NULL);

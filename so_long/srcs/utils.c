@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:31:09 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/02/01 21:11:44 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/02 09:44:17 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	return (tab);
 }
 
+static void	local_free(char *s1, char *s2)
+{
+	if (s1)
+		free(s1);
+	if (s2)
+		free(s2);
+}
+
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*str;
@@ -38,36 +46,20 @@ char	*ft_strjoin(char *s1, char *s2)
 	str = (char *) malloc(sizeof(char) * length + 1);
 	if (!str)
 	{
-		if (s1)
-			free(s1);
-		if (s2)
-			free(s2);
+		local_free(s1, s2);
 		return (NULL);
 	}
 	if (s1)
-    {
-        while (s1[j])
-		    str[i++] = s1[j++];
-    }
+	{
+		while (s1[j])
+			str[i++] = s1[j++];
+	}
 	j = 0;
 	while (s2[j])
 		str[i++] = s2[j++];
-    if (s1)
-        	free(s1);
-    if (s2)
-        	free(s2);
+	local_free(s1, s2);
 	str[i] = '\0';
 	return (str);
-}
-
-void	ft_putstr_fd(char *s, int fd)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-    write(fd, s, i);
 }
 
 void	ft_bzero(void *s, size_t n)
@@ -106,44 +98,4 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 		i++;
 	}
 	return (0);
-}
-
-int check_col(char **tab)
-{
-    int i;
-    int len;
-
-    i = 0;
-    len = ft_strlen(tab[0]);
-    while (tab[i])
-    {
-        if (tab[i][0] != '1' || tab[i][len - 1] != '1')
-            return (0);
-        i++;
-    }
-    return (1);
-}
-
-int check_line(char *str)
-{
-    int i;
-
-    i = 0;
-    while (str[i])
-    {
-        if (str[i] != '1')
-            return (0);
-        i++;
-    }
-    return (1);
-}
-
-int     width(char **tab)
-{
-    int i;
-
-    i = 0;
-    while (tab[i])
-        i++;
-    return (i);
 }

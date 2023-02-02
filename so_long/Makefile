@@ -9,6 +9,7 @@ SRCS			=	srcs/main.c \
 					srcs/parsing.c \
 					srcs/split.c \
 					srcs/utils.c \
+					srcs/utils2.c \
 					srcs/validity.c \
 					srcs/get_next_line.c \
 					srcs/get_next_line_utils.c 

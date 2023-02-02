@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 18:45:58 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/31 14:13:19 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/02 10:11:00 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+static char	*protection(char *keep)
+{
+	free(keep);
+	return (NULL);
+}
 
 char	*ft_strjoin_modif(char *keep, char *buff)
 {
@@ -28,16 +34,10 @@ char	*ft_strjoin_modif(char *keep, char *buff)
 		keep[0] = '\0';
 	}
 	if (!buff)
-	{
-		free(keep);
-		return (NULL);
-	}
+		return (protection(keep));
 	str = malloc(ft_strlen(keep) + ft_strlen(buff) + 1);
 	if (!str)
-	{
-		free(keep);
-		return (NULL);
-	}
+		return (protection(keep));
 	while (keep[++i])
 		str[i] = keep[i];
 	while (buff[j])
@@ -103,15 +103,3 @@ char	*get_next_line(int fd, int flag)
 	else
 		return (NULL);
 }
-
-// #include<stdio.h>
-// #include<string.h>
-// int main()
-// {
-//     char *str = get_next_line(0, 0);
-//     while (strchr(str, 'a') == 0)
-//     {
-//         str = get_next_line(0, 0);
-//     }
-//     printf("gg");
-// }
