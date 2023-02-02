@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 09:30:23 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/02/02 11:13:59 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/02 12:40:05 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_putchar_fd(char c, int fd);
 //		PRE_CHECK
 int		format(char *str);
 int		arg_check(int ac, char **av);
-char	*gnl(int fd, char *str, char *t);
+char	*gnl(int fd, char *str, char *t, int flag);
 
 //		 PARSING
 int		is_ok(char **tab, char **tmp);
@@ -106,5 +106,6 @@ void	mlx_destroyer(t_vars *vars);
 void	free_tab(char **tab);
 void	clean_leaving_gnl(char *tmp, char *str, int fd);
 void	free_machine(char **tab, char **tmp, char *str);
+void	exit_gnl(char *str, int flag);
 
 #endif

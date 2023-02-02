@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 18:45:58 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/02/01 14:21:11 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/02 17:27:09 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ char	*loopin(int fd, char **keep)
 	return (*keep);
 }
 
-#include <stdio.h>
 char	*get_next_line(int fd, int flag)
 {
 	char		*line;

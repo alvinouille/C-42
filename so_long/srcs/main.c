@@ -46,7 +46,7 @@ int	arg_check(int ac, char **av)
 
 	if (ac == 1 || ac > 2)
 	{
-		ft_putstr_fd("  usage: ./so_long <map>\n", 2);
+		ft_putstr_fd("Error\nUsage: ./so_long <map>\n", 2);
 		exit(1);
 	}
 	if (format(av[1]) == 0)
@@ -64,7 +64,7 @@ int	arg_check(int ac, char **av)
 	return (fd);
 }
 
-char	*gnl(int fd, char *str, char *tmp)
+char	*gnl(int fd, char *str, char *tmp, int flag)
 {
 	while (1)
 	{
@@ -81,13 +81,14 @@ char	*gnl(int fd, char *str, char *tmp)
 			ft_putstr_fd("Error\nMalloc failed !\n", 2);
 			exit(2);
 		}
+		if (str[ft_strlen(str) - 1] == '\n')
+			flag = 1;
+		else
+			flag = 0;
 	}
 	close(fd);
-	if (!tmp && !str)
-	{
-		ft_putstr_fd("Error\nEmpty map or repository !\n", 2);
-		exit(1);
-	}
+	if (!tmp)
+		exit_gnl(str, flag);
 	free(tmp);
 	return (str);
 }
@@ -103,7 +104,7 @@ int	main(int ac, char **av)
 	str = NULL;
 	t = NULL;
 	fd = arg_check(ac, av);
-	str = gnl(fd, str, t);
+	str = gnl(fd, str, t, 0);
 	tab = ft_split(str, '\n');
 	if (!tab)
 		free_machine(NULL, NULL, str);

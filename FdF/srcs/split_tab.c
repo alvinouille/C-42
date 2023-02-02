@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_tab.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:18:32 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/01 20:38:30 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/02 17:31:42 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	tab_length(char *str, char c)
 			}
 		}
 		else
-			i++;			
+			i++;
 	}
 	return (nb);
 }
@@ -55,7 +55,7 @@ int	curr_length(char *str, char c)
 	while (str[i])
 	{
 		if (str[i] == c || (str[i] >= '0' && str[i] <= '9') || str[i] == '-')
-			break;
+			break ;
 		i++;
 	}
 	return (i);
@@ -96,7 +96,7 @@ int	splitting(char *s, char c, t_vars *vars)
 
 int	split_tab(char *s, char c, t_vars *vars)
 {
-	int     width;
+	int	width;
 
 	if (!s)
 		return (0);

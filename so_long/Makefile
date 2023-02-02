@@ -6,6 +6,7 @@ SRCS			=	srcs/main.c \
 					srcs/mlx.c \
 					srcs/display.c \
 					srcs/trash.c \
+					srcs/trash2.c \
 					srcs/parsing.c \
 					srcs/split.c \
 					srcs/utils.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 20:39:06 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/01 20:40:27 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/02 17:50:23 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,17 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (NULL);
 	}
 	if (s1)
-    {
-        while (s1[j])
-		    str[i++] = s1[j++];
-    }
+	{
+		while (s1[j])
+			str[i++] = s1[j++];
+	}
 	j = 0;
 	while (s2[j])
 		str[i++] = s2[j++];
-    if (s1)
-        	free(s1);
-    if (s2)
-        	free(s2);
+	if (s1)
+		free(s1);
+	if (s2)
+		free(s2);
 	str[i] = '\0';
 	return (str);
 }

@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:15:38 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/01 20:40:53 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/02 17:47:27 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		around(float nb)
+int	around(float nb)
 {
 	if (nb - (int)nb > 0.5)
-        return ((int)ceil(nb));
-    else
+		return ((int)ceil(nb));
+	else
 		return ((int)floor(nb));
 }
 
@@ -33,32 +33,36 @@ void	img_pixel_put(t_data *img, double x, double y, int color)
 {
 	char	*px;
 
-	px = img->addr + around((y * img->line_length + x * (img->bits_per_pixel / 8)));
-	
-	*(unsigned int*)px = color;
+	px = img->addr + around((y * img->line_length
+				+ x * (img->bits_per_pixel / 8)));
+	*(unsigned int *)px = color;
 }
 
-// int ft_strlen_modif(char *str)
-// {
-//     int i;
-//     int res;
+char	*ft_strnstr(const char *big, const char *little, size_t len)
+{
+	size_t	i;
+	size_t	j;
 
-//     i = 0;
-//     res = 0;
-//     if (!str)
-//         return (0);
-//     while (str[i] && str[i] != '\n')
-//     {
-//         if (str[i] >= '0' && str[i] <= '9')
-//         {
-//             res++;
-//             while (str[i] >= '0' && str[i] <= '9')
-//                 i++;
-//         }
-//         i++;
-//     }
-//     return (res);
-// }
+	j = 0;
+	i = 0;
+	if (little[0] == '\0')
+		return ((char *)big);
+	while (big[i] && i < len)
+	{
+		j = 0;
+		while (big[i + j] == little[j]
+			&& (i + j) < len && big[i + j])
+		{
+			j++;
+			if (little[j] == '\0')
+			{
+				return ((char *)&big[i]);
+			}
+		}
+		i++;
+	}
+	return (0);
+}
 
 void	ft_putstr_fd(char *s, int fd)
 {

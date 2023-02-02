@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   inutils.c                                          :+:      :+:    :+:   */
+/*   trash2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/27 11:25:12 by alvina            #+#    #+#             */
-/*   Updated: 2023/01/27 11:25:30 by alvina           ###   ########.fr       */
+/*   Created: 2023/02/02 12:38:09 by ale-sain          #+#    #+#             */
+/*   Updated: 2023/02/02 12:38:18 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "so_long.h"
 
-void	print(int **tab, int width, int *leng)
+void	exit_gnl(char *str, int flag)
 {
-	int x = 0;
-	int y = 0;
-	while (y < width)
+	if (!str)
 	{
-		while (x < leng[y])
-		{
-			printf("%d ", tab[y][x]);
-			x++;
-		}
-		printf("\n");
-		x = 0;
-		y++;
+		ft_putstr_fd("Error\nEmpty map or repository !\n", 2);
+		exit(1);
+	}
+	if (flag == 1)
+	{
+		free(str);
+		ft_putstr_fd("Error\nInvalid map !\n", 2);
+		exit(1);
 	}
 }

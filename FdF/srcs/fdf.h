@@ -1,65 +1,67 @@
-/*	**************************************************************************	*/
-/*			*/
-/*			:::			::::::::	*/
-/*	fdf.h			:+:			:+:	:+:	*/
-/*			+:+	+:+			+:+		*/
-/*	By:	alvina	<alvina@student.42.fr>			+#+	+:+			+#+			*/
-/*			+#+#+#+#+#+	+#+			*/
-/*	Created:	2023/01/19	08:15:33	by	alvina			#+#	#+#			*/
-/*	Updated:	2023/02/01	20:43:17	by	alvina			###	########.fr			*/
-/*			*/
-/*	**************************************************************************	*/
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/02 17:56:07 by ale-sain          #+#    #+#             */
+/*   Updated: 2023/02/02 18:00:07 by ale-sain         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#ifndef	FDF_H
-#define	FDF_H
+#ifndef FDF_H
+# define FDF_H
 
-#include	<stdlib.h>
-#include	<stdio.h>
-#include	<unistd.h>
-#include	"../mlx/mlx.h"
-#include	"../mlx/mlx_int.h"
-#include	"get_next_line.h"
-#include	<math.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <unistd.h>
+# include "../mlx/mlx.h"
+# include "../mlx/mlx_int.h"
+# include "get_next_line.h"
+# include <math.h>
+# define LENGTH 1920
+# define WIDTH 1080
 
-typedef	struct	s_needle
+typedef struct s_needle
 {
-    double	x;
-    double	y;
+	double	x;
+	double	y;
 }	t_needle;
 
-typedef	struct	s_data	
+typedef struct s_data
 {
-    void	*img;
-    char	*addr;
-    int		bits_per_pixel;
-    int		line_length;
-    int		endian;
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
 }				t_data;
 
-typedef	struct	s_point
+typedef struct s_point
 {
-    double	x;
-    double	y;
-    double	z;
+	double	x;
+	double	y;
+	double	z;
 }	t_point;
 
-typedef	struct	s_vars	{
-    void		*mlx;
-    void		*win;
-    t_data		img;
-    int			**tab;
-    int			width;
-    int			echelle;
-    t_point		origine;
-    t_needle	**map;
-    int			*leng;
+typedef struct s_vars
+{
+	void		*mlx;
+	void		*win;
+	t_data		img;
+	int			**tab;
+	int			width;
+	int			echelle;
+	t_point		origine;
+	t_needle	**map;
+	int			*leng;
 }				t_vars;
-
 
 //			UTILS
 char		*ft_strjoin(char *s1, char *s2);
 int			ft_atoi(char *nptr);
-//	int		ft_strlen_modif(char	*str);
+char		*ft_strnstr(const char *big, const char *little, size_t len);
 void		ft_putstr_fd(char *s, int fd);
 int			around(float nb);
 int			ft_isalnum(int c);
@@ -68,11 +70,11 @@ int			tab_width(char *str, char c);
 
 //			MLX
 void		img_pixel_put(t_data *img, double x, double y, int color);
-void		mlx(t_vars	vars);
-int			key_hook(int	keycode,	t_vars	*vars);
-int			fdf(t_vars	*vars);
-int			closing_mouse(t_vars	*vars);
-int			closing_key(int	keycode,	t_vars	*vars);
+void		mlx(t_vars vars);
+int			key_hook(int keycode, t_vars *vars);
+int			fdf(t_vars *vars);
+int			closing_mouse(t_vars *vars);
+int			closing_key(int keycode, t_vars *vars);
 
 //		BRASENHAM
 void		first(t_data img, t_needle curr, t_needle next);
