@@ -17,7 +17,7 @@ SRCS			=	srcs/main.c \
 OBJS    		= $(SRCS:.c=.o)
 CC				= cc
 RM				= rm -rf
-CFLAGS			= -Wall -Wextra -Werror -g
+CFLAGS			= -Wall -Wextra -Werror
 MLX_FLAGS 		= -lX11 -lXext -lm
 MLX_DIR			= mlx
 MLX_LIB			= mlx/libmlx_Linux.a
@@ -41,8 +41,5 @@ fclean:		clean
 			@${RM} ${MLX_LIB}
 
 re:			fclean all
-
-malloc_test: $(OBJS) $(MLX_LIB)
-	$(CC) $(CFLAGS) -fsanitize=undefined -rdynamic -o $@ ${OBJS} $(MLX_LIB) -L. -lmallocator $(MLX_FLAGS)
 
 .PHONY: all clean fclean re
