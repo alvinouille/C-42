@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 17:56:07 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/02/02 18:00:07 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/03 17:40:36 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_vars
 }				t_vars;
 
 //			UTILS
-char		*ft_strjoin(char *s1, char *s2);
+char		*ft_strjoin(char *s1, char *s2, int i, int j);
 int			ft_atoi(char *nptr);
 char		*ft_strnstr(const char *big, const char *little, size_t len);
 void		ft_putstr_fd(char *s, int fd);
@@ -92,6 +92,7 @@ void		bresenham(t_data img, t_needle curr, t_needle next);
 void		such_a_quitter(t_vars *vars, int flag);
 void		cleaning_tab(t_vars *vars);
 void		clean_mlx(t_vars *vars);
+void		freeer(char *s1, char *s2);
 
 //			PARSING
 int			split_tab(char *s, char c, t_vars *vars);
@@ -100,7 +101,7 @@ int			arg_check(int ac, char **av);
 void		free_tab(int **tab, int j);
 
 //			TRACING
-void		tracing(t_vars vars);
+void		tracing(t_vars vars, int i, int j);
 t_needle	**create(int *length, int width, t_vars *vars);
 void		quadrillage(t_vars *vars);
 void		black_screen(t_vars *vars);

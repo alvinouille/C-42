@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 16:34:30 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/26 18:25:15 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/03 16:52:47 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t	ft_strlen(char *s);
 int		ft_strchr(char *s, int c);
 char	*ft_line(char *keep);
 char	*ft_keep_memory(char *keep);
-char	*ft_strjoin_modif(char *keep, char *buff);
+char	*ft_strjoin_modif(char *keep, char *buff, size_t i, size_t j);
 char	*loopin(int fd, char **keep);
 char	*get_next_line(int fd, int flag);
 

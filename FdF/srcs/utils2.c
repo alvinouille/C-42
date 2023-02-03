@@ -6,31 +6,21 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 20:39:06 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/02 17:50:23 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/03 17:40:59 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char *s1, char *s2, int i, int j)
 {
 	char	*str;
-	int		i;
-	int		j;
 	int		length;
 
-	i = 0;
-	j = 0;
 	length = ft_strlen(s1) + ft_strlen(s2);
 	str = (char *) malloc(sizeof(char) * length + 1);
 	if (!str)
-	{
-		if (s1)
-			free(s1);
-		if (s2)
-			free(s2);
-		return (NULL);
-	}
+		return (freeer(s1, s2), NULL);
 	if (s1)
 	{
 		while (s1[j])
@@ -39,12 +29,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	j = 0;
 	while (s2[j])
 		str[i++] = s2[j++];
-	if (s1)
-		free(s1);
-	if (s2)
-		free(s2);
 	str[i] = '\0';
-	return (str);
+	return (freeer(s1, s2), str);
 }
 
 int	ft_atoi(char *nptr)

@@ -6,25 +6,14 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 20:30:29 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/02 18:02:50 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:48:32 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	tracing(t_vars vars)
+void	tracing(t_vars vars, int i, int j)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	if (vars.width == 1 && vars.leng[0] == 1)
-	{
-		img_pixel_put(&(vars.img), vars.map[0][0].x,
-			vars.map[0][0].y, 0x00FFFFFF);
-		return ;
-	}
 	while (j < vars.width)
 	{
 		while (i < vars.leng[j] - 1)
@@ -59,10 +48,7 @@ t_needle	**create(int *length, int width, t_vars *vars)
 	j = 0;
 	tab = malloc(sizeof (t_needle *) * width);
 	if (!tab)
-	{
-		cleaning_tab(vars);
-		return (NULL);
-	}
+		return (cleaning_tab(vars), NULL);
 	while (i < width)
 	{
 		tab[i] = malloc(sizeof(t_needle) * length[i]);
@@ -73,9 +59,7 @@ t_needle	**create(int *length, int width, t_vars *vars)
 				free(tab[j]);
 				j++;
 			}
-			free(tab);
-			cleaning_tab(vars);
-			return (NULL);
+			return (free(tab), cleaning_tab(vars), NULL);
 		}
 		i++;
 	}

@@ -1,0 +1,34 @@
+#########################
+### KEYBOARD CONTROLS ###
+#########################
+
+esc	: quit program
+
+w	: linear scale z up
+s	: linear scale z down
+i	: exponential scale z up
+k	: exponential scale z down
+r	: toggle map relief
+f	: focus map
+
+1	: isometric projection
+2	: military projection
+3	: top down projection
+
+#########################
+#########################
+#########################
+
+######################
+### MOUSE CONTROLS ###
+######################
+
+left click	: move map
+right click	: rotate map
+
+scroll up	: zoom in
+scroll down	: zoom out
+
+######################
+######################
+######################

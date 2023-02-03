@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 08:18:32 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/02 17:31:42 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/03 17:44:35 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,13 @@ int	splitting(char *s, char c, t_vars *vars)
 	int	i;
 
 	i = 0;
-	vars->width = 0;
 	while (s[i])
 	{
 		if (s[i] != c && ((s[i] >= '0' && s[i] <= '9') || s[i] == '-'))
 		{
 			vars->tab[vars->width] = malloc(sizeof(int) * tab_length(&s[i], c));
 			if (!vars->tab[vars->width])
-			{
-				free_tab(vars->tab, vars->width);
-				return (0);
-			}
+				return (free_tab(vars->tab, vars->width), 0);
 			vars->leng[vars->width] = tab_length(&s[i], c);
 			k = 0;
 			while (s[i] != c && s[i])
@@ -105,9 +101,9 @@ int	split_tab(char *s, char c, t_vars *vars)
 	vars->leng = (int *) malloc(sizeof(int) * width);
 	if (!vars->tab)
 		return (0);
+	vars->width = 0;
 	if (!vars->leng)
 	{
-		vars->width = 0;
 		cleaning_tab(vars);
 		return (0);
 	}

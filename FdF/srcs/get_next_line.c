@@ -6,20 +6,16 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 18:45:58 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/02/02 17:27:09 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:56:33 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strjoin_modif(char *keep, char *buff)
+char	*ft_strjoin_modif(char *keep, char *buff, size_t i, size_t j)
 {
-	size_t	i;
-	size_t	j;
 	char	*str;
 
-	i = -1;
-	j = 0;
 	if (!keep)
 	{
 		keep = malloc(1);
@@ -28,23 +24,16 @@ char	*ft_strjoin_modif(char *keep, char *buff)
 		keep[0] = '\0';
 	}
 	if (!buff)
-	{
-		free(keep);
-		return (NULL);
-	}
+		return (free(keep), NULL);
 	str = malloc(ft_strlen(keep) + ft_strlen(buff) + 1);
 	if (!str)
-	{
-		free(keep);
-		return (NULL);
-	}
+		return (free(keep), NULL);
 	while (keep[++i])
 		str[i] = keep[i];
 	while (buff[j])
 		str[i++] = buff[j++];
 	str[ft_strlen(keep) + ft_strlen(buff)] = '\0';
-	free(keep);
-	return (str);
+	return (free(keep), str);
 }
 
 char	*loopin(int fd, char **keep)
@@ -70,7 +59,7 @@ char	*loopin(int fd, char **keep)
 			return (NULL);
 		}
 		buff[size] = '\0';
-		(*keep) = ft_strjoin_modif((*keep), buff);
+		(*keep) = ft_strjoin_modif((*keep), buff, -1, 0);
 	}
 	free(buff);
 	return (*keep);
@@ -93,30 +82,12 @@ char	*get_next_line(int fd, int flag)
 	{
 		line = ft_line(keep);
 		if (!line)
-		{
-			free(keep);
-			return (NULL);
-		}
+			return (free(keep), NULL);
 		keep = ft_keep_memory(keep);
 		if (!keep)
-		{
-			free(line);
-			return (NULL);
-		}
+			return (free(line), NULL);
 		return (line);
 	}
 	else
 		return (NULL);
 }
-
-// #include<stdio.h>
-// #include<string.h>
-// int main()
-// {
-//     char *str = get_next_line(0, 0);
-//     while (strchr(str, 'a') == 0)
-//     {
-//         str = get_next_line(0, 0);
-//     }
-//     printf("gg");
-// }

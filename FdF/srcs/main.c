@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:15:21 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/02/02 18:02:44 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/03 21:11:37 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	format(char *str)
 	int	size;
 
 	size = ft_strlen(str);
-	if (size < 4)
+	if (size <= 4)
 		return (0);
 	if (ft_strnstr(&str[size - 4], ".fdf", 4) != 0)
 		return (1);
@@ -60,7 +60,7 @@ char	*gnl(int fd)
 		tmp = get_next_line(fd, 0);
 		if (!tmp)
 			break ;
-		str = ft_strjoin(str, tmp);
+		str = ft_strjoin(str, tmp, 0, 0);
 		if (!str)
 		{
 			get_next_line(fd, 1);
@@ -74,9 +74,7 @@ char	*gnl(int fd)
 		close(fd);
 		exit(1);
 	}
-	free(tmp);
-	close(fd);
-	return (str);
+	return (free(tmp), close(fd), str);
 }
 
 int	main(int ac, char **av)

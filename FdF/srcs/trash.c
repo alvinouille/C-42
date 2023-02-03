@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 20:28:29 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/02 17:18:21 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/03 17:39:46 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,12 @@ void	such_a_quitter(t_vars *vars, int flag)
 	if (flag == 2)
 		ft_putstr_fd("Malloc failed !\n", 2);
 	exit(flag);
+}
+
+void	freeer(char *s1, char *s2)
+{
+	if (s1)
+		free(s1);
+	if (s2)
+		free(s2);
 }
