@@ -3,40 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 15:26:16 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/04 19:36:36 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/06 18:12:05 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	fonction(int signum)
+void	test(int signum, siginfo_t *client, void *context)
 {
-	printf("SURPRISE CA QUITTE PAS\n");
-}
+	int	pid;
+	(void)context;
 
-void	ft_test(int signum, siginfo_t *client, void *str)
-{
-	printf("OK");
+	pid = client->si_pid;
+	printf(".");
+	if (signum == SIGUSR1)
+		printf("0");
+	if (signum == SIGUSR2)
+		printf("1");
 }
 
 int	main(int ac, char **av)
 {
 	int					pid;
 	struct sigaction	sa;
-	struct sigaction	test;
-	// struct siginfo_t	info;	
 
-	test.sa_sigaction = ft_test;
-	sa.sa_handler = fonction;
+	sa.sa_sigaction = &test;
 	pid = getpid();
 	printf("PID : %d\n", pid);
-	sigaction(SIGINT, &sa, NULL);
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
 	{
 		pause();
 	}
-	sigaction(SIGUSR1, &test, NULL);
 }
