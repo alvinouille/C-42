@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 18:05:31 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/08 19:36:33 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/09 19:11:08 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ char	*binaire(char c)
 
 	i = 0;
 	octet = malloc(sizeof(char) * 9);
+	if (!octet)
+	{
+		ft_putstr("Malloc failed\n");
+		return (NULL);
+	}
 	while (i < 8)
 	{
 		octet[i] = (c % 2) + '0';
@@ -38,15 +43,31 @@ void	char_sender(char *octet, int pid)
 	j = 0;
 	size = 7;
 	g_msg_received = 0;
+	if (!octet)
+		exit(EXIT_FAILURE);
 	while (octet[j])
 	{
 		if (octet[size -j] == '0')
-			kill(pid, SIGUSR1);
+		{
+			if (kill(pid, SIGUSR1) == -1)
+			{
+				ft_putstr("Kill failed\n");
+				free(octet);
+				exit(EXIT_FAILURE);
+			}
+
+		}
 		else
-			kill(pid, SIGUSR2);
+		{
+			if (kill(pid, SIGUSR2) == -1)
+			{
+				ft_putstr("Kill failed\n");
+				free(octet);
+				exit(EXIT_FAILURE);
+			}
+		}
 		while (!g_msg_received)
 			pause();
-		write(1, &octet[size - j], 1);
 		j++;
 		g_msg_received = 0;
 	}
@@ -69,19 +90,28 @@ int	main(int ac, char **av)
 	char				*octet;
 	struct sigaction	sa;
 
+	i = 0;
+	if (ac != 3)
+	{
+		ft_putstr("Usage : ./client <server PID> <message>\n");
+		exit(EXIT_FAILURE);
+	}
 	pid = ft_atoi(av[1]);
 	str = av[2];
-	i = 0;
 	sa.sa_sigaction = &test;
 	sa.sa_flags = SA_RESTART;
 	sigemptyset(&sa.sa_mask);
-	sigaction(SIGUSR1, &sa, NULL);
-	while (str[i])
+	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+		exit(EXIT_FAILURE);
+	if (str[i])
 	{
-		octet = binaire(str[i]);
-		char_sender(octet, pid);
-		i++;
+		while (str[i])
+		{
+			octet = binaire(str[i]);
+			char_sender(octet, pid);
+			i++;
+		}
+		char_sender(binaire('\n'), pid);
 	}
-	char_sender(binaire('\n'), pid);
 	char_sender(binaire('\0'), pid);
 }
