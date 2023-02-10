@@ -1,7 +1,7 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <fcntl.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 10
 #endif
@@ -14,7 +14,7 @@ int ft_strchr(char *str, char c)
     while (str[i])
     {
         if (str[i] == c)
-            return 1;
+            return (1);
         i++;
     }
     return (0);
@@ -23,6 +23,8 @@ int ft_strchr(char *str, char c)
 int ft_strlen(char *str)
 {
     int i = 0;
+    if (!str)
+        return (0);
     while (str[i])
         i++;
     return (i);
@@ -57,15 +59,32 @@ char *join(char *keep, char *buf)
     return (str);
 }
 
+char    *ft_line(char *keep)
+{
+    int i = 0;
+    char *str;
+
+    if (!keep[i])
+        return (NULL);
+    while (keep[i] && keep[i] != '\n')
+        i++;
+    str = malloc(i + 2);
+    i = 0;
+    while (keep[i] && keep[i] != '\n')
+    {
+        str[i] = keep[i];
+        i++;
+    }
+    str[i] = '\0';
+    return (str);
+}
+
 int looping(char **keep, int fd)
 {
-    int size = 1;
     char *buf;
-
-    buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
-    if (!buf)
-        return (0);
-    while (!(ft_strchr(*keep, '\n')) && size != 0)
+    int size = 1;
+    buf = malloc(BUFFER_SIZE + 1);
+    while (!ft_strchr(*keep, '\n') && size != 0)
     {
         size = read(fd, buf, BUFFER_SIZE);
         if (size == -1)
@@ -80,53 +99,28 @@ int looping(char **keep, int fd)
     return (1);
 }
 
-char *ft_line(char *keep)
-{
-    int i = 0;
-    int j = 0;
-    char *str;
-    if (!keep[i])   // ATTENTION PAS (!keep)
-        return (NULL);
-    while (keep[i] != '\n' && keep[i])
-        i++;
-    str = malloc(sizeof(char) * (i + 2));
-    i = 0;
-    while (keep[i] && keep[i] != '\n')
-    {
-        str[j] = keep[i];
-        i++;
-        j++;
-    }
-    if (keep[i] == '\n')
-        i++;
-    str[j] = '\0';
-    return (str);
-}
-
 char *keep_memory(char *keep)
 {
-    char *str;
     int i = 0;
     int j = 0;
+    char *str;
 
-    while (keep[i] != '\n' && keep[i])
+    while (keep[i] && keep[i] != '\n')
         i++;
     if (!keep[i])
     {
         free(keep);
-        return (NULL);
+        return NULL;
     }
-    str = malloc(ft_strlen(keep) - i + 1);
-    if ((keep)[i] == '\n')
-        i++;
-    while ((keep)[i])
+    str = malloc(ft_strlen(keep) -i + 1);
+    i++;
+    while (keep[i])
     {
-        str[j] = (keep)[i];
+        str[j] = keep[i];
         i++;
-        j++;
     }
+    str[j] = '\0';
     free(keep);
-    str[j] = '\0'; //NE PAS LOUBLIER
     return (str);
 }
 
@@ -143,21 +137,17 @@ char *get_next_line(int fd)
         if (!line)
         {
             free(keep);
-            return (NULL);
+            return NULL;
         }
         keep = keep_memory(keep);
         return (line);
     }
-    else
-        return (NULL);
+    return (NULL);
 }
 
-#include<stdio.h>
-#include<string.h>
-
-int main()
+int main(int ac, char **av)
 {
-    int fd = open("lol", O_RDONLY);
+    int fd = open(av[1], O_RDONLY);
     char *str;
     while (1)
     {
