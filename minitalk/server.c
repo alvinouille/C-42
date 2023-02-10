@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 15:26:16 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/09 19:03:04 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/10 17:43:42 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,11 @@ void	char_receiver(int signum, siginfo_t *client, void *context)
 		i++;
 	}
 	if (kill(pid, SIGUSR1) == -1)
-		ft_putstr("Signal of bit reception failed to be send\n");
+	{
+		kill(pid, SIGUSR2);
+		free(str);
+		exit(EXIT_FAILURE);
+	}
 	if (i == 8)
 	{
 		i = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 18:05:31 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/09 19:11:08 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/10 17:45:11 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	char_sender(char *octet, int pid)
 		{
 			if (kill(pid, SIGUSR1) == -1)
 			{
-				ft_putstr("Kill failed\n");
 				free(octet);
 				exit(EXIT_FAILURE);
 			}
@@ -61,7 +60,6 @@ void	char_sender(char *octet, int pid)
 		{
 			if (kill(pid, SIGUSR2) == -1)
 			{
-				ft_putstr("Kill failed\n");
 				free(octet);
 				exit(EXIT_FAILURE);
 			}
@@ -80,6 +78,8 @@ void	test(int signum, siginfo_t *client, void *context)
 	(void)context;
 	if (signum == SIGUSR1)
 		g_msg_received = 1;
+	if (signum == SIGUSR2)
+		exit(EXIT_FAILURE);
 }
 
 int	main(int ac, char **av)
@@ -102,6 +102,8 @@ int	main(int ac, char **av)
 	sa.sa_flags = SA_RESTART;
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+		exit(EXIT_FAILURE);
+	if (sigaction(SIGUSR2, &sa, NULL) == -1)
 		exit(EXIT_FAILURE);
 	if (str[i])
 	{
