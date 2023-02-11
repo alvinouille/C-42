@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 15:26:16 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/10 17:43:42 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/10 20:55:48 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,71 @@
 
 char *str;
 
-char	*ft_strjoin(char *s1, char c)
+// char	*ft_strjoin(char *s1, char c)
+// {
+// 	char	*str;
+// 	int		i;
+// 	int		j;
+// 	int		length;
+
+// 	i = 0;
+// 	j = 0;
+// 	length = 1;
+// 	if (!s1)
+// 	{
+// 		s1 = malloc(1);
+// 		s1[0] = '\0';
+// 	}
+// 	length = ft_strlen(s1) + 1;
+// 	str = (char *) malloc(sizeof(char) * length + 1);
+// 	if (!str)
+// 	{
+// 		free(s1);
+// 		ft_putstr("Malloc failed\n");
+// 		return (NULL);
+// 	}
+// 	if (s1)
+// 	{
+// 		while (s1[j])
+// 			str[i++] = s1[j++];
+// 	}
+// 	j = 0;
+// 	str[i++] = c;
+// 	str[i] = '\0';
+// 	if (s1)
+// 		free(s1);
+// 	return (str);
+// }
+
+char	*ft_strjoin(char *keep, char c)
 {
+	size_t	i;
 	char	*str;
-	int		i;
-	int		j;
-	int		length;
 
 	i = 0;
-	j = 0;
-	length = 1;
-	if (!s1)
+	if (!keep)
 	{
-		s1 = malloc(1);
-		s1[0] = '\0';
+		keep = malloc(1);
+		keep[0] = '\0';
 	}
-	length = ft_strlen(s1) + 1;
-	str = (char *) malloc(sizeof(char) * length + 1);
+	str = malloc(ft_strlen(keep) + 1 + 1);
 	if (!str)
 	{
-		free(s1);
-		ft_putstr("Malloc failed\n");
-		return (NULL);
+		str = 0;
+		free(keep);
+		keep = 0;
+		exit(EXIT_FAILURE);
 	}
-	if (s1)
+	while (keep[i])
 	{
-		while (s1[j])
-			str[i++] = s1[j++];
+		str[i] = keep[i];
+		i++;
 	}
-	j = 0;
-	str[i++] = c;
-	str[i] = '\0';
-	if (s1)
-		free(s1);
+	str[i] = c;
+	i++;
+	str[ft_strlen(keep) + 1] = '\0';
+	free(keep);
+	keep = 0;
 	return (str);
 }
 
@@ -72,9 +104,11 @@ void	ft_exit(char *str)
 	if (ft_strnstr(str, "exit", 4))
 	{
 		free(str);
+		str = 0;
 		exit(EXIT_SUCCESS);
 	}
 }
+
 void	char_receiver(int signum, siginfo_t *client, void *context)
 {
 	int			pid;
@@ -98,6 +132,7 @@ void	char_receiver(int signum, siginfo_t *client, void *context)
 	{
 		kill(pid, SIGUSR2);
 		free(str);
+		str = 0;
 		exit(EXIT_FAILURE);
 	}
 	if (i == 8)
@@ -106,9 +141,13 @@ void	char_receiver(int signum, siginfo_t *client, void *context)
 		octet[8] = '\0';
 		letter = print_char(octet);
 		str = ft_strjoin(str, letter);
+		// ft_putchar(letter);
 		if (!str)
+		{
+			str = 0;
 			exit(EXIT_FAILURE);
-		if (letter == 0)
+		}
+		if (letter == 0)     //segfault avec valgrind / sans g3 / sinon juste print lettre par lettre ca marche
 		{
 			ft_putstr(str);
 			ft_exit(str);

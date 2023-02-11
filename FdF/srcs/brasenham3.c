@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   brasenham3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 20:35:17 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/02 18:02:38 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/11 14:54:06 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	first(t_data img, t_needle curr, t_needle next)
 	{
 		if (x < LENGTH && x > 0 && y < WIDTH && y > 0)
 			img_pixel_put(&img, x, y, 0x00FFFFFF);
-		x++;
 		if (x == next.x)
 			break ;
+		x++;
 		e -= dy;
 		if (e < 0)
 		{
@@ -58,9 +58,9 @@ void	second(t_data img, t_needle curr, t_needle next)
 	{
 		if (x < LENGTH && x > 0 && y < WIDTH && y > 0)
 			img_pixel_put(&img, x, y, 0x00FFFFFF);
-		y++;
 		if (y == next.y)
 			break ;
+		y++;
 		e -= dx;
 		if (e < 0)
 		{
@@ -114,9 +114,9 @@ void	fifth(t_data img, t_needle curr, t_needle next)
 	{
 		if (x < LENGTH && x > 0 && y < WIDTH && y > 0)
 			img_pixel_put(&img, x, y, 0x00FFFFFF);
-		x--;
 		if (x == next.x)
 			break ;
+		x--;
 		e -= dy;
 		if (e >= 0)
 		{
@@ -143,9 +143,9 @@ void	sixth(t_data img, t_needle curr, t_needle next)
 	{
 		if (x < LENGTH && x > 0 && y < WIDTH && y > 0)
 			img_pixel_put(&img, x, y, 0x00FFFFFF);
-		y--;
 		if (y == next.y)
 			break ;
+		y--;
 		e -= dx;
 		if (e >= 0)
 		{
