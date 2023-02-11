@@ -27,7 +27,7 @@ char	**split_env(char **env)
 	{
 		while (env[i][j] != '/')
 			j++;
-		return (ft_split(&env[i][66], ':'));
+		return (ft_split(&env[i][j], ':'));
 	}
 	else
 		return (NULL);

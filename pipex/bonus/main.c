@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:26:33 by ale-sain          #+#    #+#             */
-/*   Updated: 2023/01/13 20:10:16 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/11 18:44:22 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**split_env(char **env)
 	{
 		while (env[i][j] != '/')
 			j++;
-		return (ft_split(&env[i][66], ':'));
+		return (ft_split(&env[i][j], ':'));
 	}
 	else
 		return (NULL);

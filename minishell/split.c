@@ -6,7 +6,7 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:55:05 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/08 13:58:50 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/11 20:18:00 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,35 +25,61 @@ static char	**free_tab(char **tab, int j)
 	return (NULL);
 }
 
-static int	length_words(char *str)
+static int	length(char *str, int *state)
 {
 	int	i;
 
 	i = 0;
-    if (is_separator(str[i])
-        return (is_separator(str[i])
-	while ((str[i] != ' ' || str[i] != '<' || str[i] != '>'))
+	if (!str)
+		return (0);
+	while (str[i])
+	{
+// printf("i = %d, state = %d\n", i, *state);
+		if (*state == 0 && is_separator(&str[i]))
+			return (i);
 		i++;
+		*state = changing_state(str[i], *state);
+	}
 	return (i);
 }
 
-
-void    wording(char *str, char ***tab, int j, int (*f)(char *))
+int    wording_sep(char *str, char ***tab, int j, int (*f)(char *))
 {
-    int k;
     int i;
 
-    k = 0;
     i = 0;
-    *tab[j] = malloc(sizeof(char) * (f(str) + 1));
-    if (!*tab[j])
-		return (free_tab(*tab, j));
+    (*tab)[j] = malloc(sizeof(char) * (f(str) + 1));
+    if (!(*tab)[j])
+		return (free_tab(*tab, j), 0);
 	while (f(&str[i]) && str[i])
-		*tab[j][k++] = str[i++];
-	*tab[j][k] = '\0';
+	{
+		(*tab)[j][i] = str[i];
+		i++;
+	}
+	(*tab)[j][i] = '\0';
+	return (i);
 }
 
-static char	**splitting(char **tab, char *str, int state)
+int		wording_other(char *str, char ***tab, int j, int *state)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = length(str, state);
+	(*tab)[j] = malloc(sizeof(char) * len + 1);
+	if (!(*tab)[j])
+		return (free_tab(*tab, j), 0);
+	while (i < len)
+	{
+		(*tab)[j][i] = str[i];
+		i++;
+	}
+	(*tab)[j][i] = '\0';
+	return (i);
+}
+
+char	**splitting(char **tab, char *str, int state)
 {
 	int	j;
 	int	i;
@@ -62,33 +88,32 @@ static char	**splitting(char **tab, char *str, int state)
 	j = 0;
 	while (str[i])
 	{
+
         state = changing_state(str[i], state);
         if (state == 0 && is_separator(&str[i]))
         {
             if (!is_space(&str[i]))
             {
                 if (is_pipe(&str[i]))
-                    wording(&str[i], &tab, j, is_pipe);
-                else
-                    wording(&str[i], &tab, j, is_red);
+				{
+                    i += wording_sep(&str[i], &tab, j, is_pipe);
+				}
+				else
+                    i += wording_sep(&str[i], &tab, j, is_red);
 			    j++;
             }
+			else
+				i++;
         }
-		if (str[i] != ' ' || state != 0)
+		else if (str[i] != ' ' || state != 0)
 		{
-			tab[j] = malloc(sizeof(char) * (length_words(&str[i]) + 1));
-			if (!tab)
-				return (free_tab(tab, j));
-			k = 0;
-			while (str[i] != c && s[i])
-				tab[j][k++] = str[i++];
-			tab[j][k] = '\0';
+			i += wording_other(&str[i], &tab, j, &state);
 			j++;
 		}
 		else
 			i++;
 	}
-	tab[j] = 0;
+	tab[j] = '\0';
 	return (tab);
 }
 
@@ -98,6 +123,8 @@ char	**first_split(char *str)
     int     state;
 
     state = 0;
+	if (!str || str[0] == 0)
+		return (NULL);
 	if (count_words(str) == 0)
 		return (NULL);
 	tab = (char **) malloc(sizeof(char *) * (count_words(str) + 1));
@@ -106,32 +133,76 @@ char	**first_split(char *str)
 	return (splitting(tab, str, state));
 }
 
-// int	changing_state(int state, int quote)
-// {
-// 	if (state == quote)
-// 		return (0);
-// 	if (state == 0)
-// 		return (quote);
-// }
+void	*generator_token(t_token **lst, char *str)
+{
+	t_token		*new;
 
-// void	t_token_creator(char *str)
-// {
-// 	int	state;
-// 	int	i;
+	new = ft_lstnew(str);
+	if (!new)
+		return (NULL);
+	return (ft_lstadd_back(lst, new));
+}
 
-// 	state = 0;
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == 39)
-// 			state = changing_state(state, 1);
-// 		if (str[i] == '"')
-// 			state = changing_state(state, 2);
-// 		if (is_separator(&str[i]))
-// 		{
-// 			i += is_separator(&str[i]);
-// 		else
-// 			i++;
-// 	}
-// }
+void	print_lst(t_token *lst)
+{
+	while (lst)
+	{
+		printf("%s\n", lst->value);
+		lst = lst->next;
+	}
+}
 
+t_token	*generator(char **tab)
+{
+	int	i;
+	t_token *lst;
+	t_token *head;
+
+	i = 0;
+	lst = NULL;
+	while (tab[i])
+	{
+		// if (!generator_token(&tok, tab[i]))
+		// {
+		// 	if (!tok)
+		// 		return (0);
+		// 	ft_lstclear(&tok->head, cleanator);
+		// 	return (0);
+		// }
+		generator_token(&lst, tab[i]);
+		if (i == 0)
+			head = lst;
+		i++;
+	}
+	return (head);
+}
+
+int main()
+{
+	char	*str;
+	char **tab;
+	t_token *lst;
+	size_t	size;
+	int i = 0;
+
+	ft_putstr_fd("nanoshell> ", 0);
+	str = get_next_line(0, 0);
+	while (1)
+	{
+		if (!str)
+			break;
+		tab = first_split(str);
+		if (!tab)
+		{
+			free(str);
+			break;
+		}
+		lst = generator(tab);
+		print_lst(lst);
+		free_tab(tab, i);
+		free(str);
+		ft_putstr_fd("nanoshell> ", 0);
+		str = get_next_line(0, 0);
+	}
+	get_next_line(0, 1);
+}

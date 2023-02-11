@@ -6,7 +6,7 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:31:58 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/08 13:12:11 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/11 18:47:58 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int is_space(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	if (str[i])
 	{
 		if (str[i] == ' ')
@@ -34,6 +36,8 @@ int	is_red(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	if (str[i])
 	{
 		if (str[i] == '<' || str[i] == '>')
@@ -50,6 +54,8 @@ int	is_pipe(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	if (str[i])
 	{
 		if (str[i] == '|')
@@ -115,9 +121,3 @@ int	count_words(char *str)
 	}
 	return (nb);
 }
-
-// int main(int ac, char **av)
-// {
-// 	(void)ac;
-// 	printf("nb = %d\n", count_words(av[1]));
-// }
