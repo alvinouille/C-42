@@ -3,73 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 18:05:31 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/10 17:45:11 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/12 18:36:04 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 int     g_msg_received;
 
-char	*binaire(char c)
+void	char_sender(char c, int pid)
 {
-	int		i;
-	char	*octet;
+	int	i;
 
-	i = 0;
-	octet = malloc(sizeof(char) * 9);
-	if (!octet)
-	{
-		ft_putstr("Malloc failed\n");
-		return (NULL);
-	}
-	while (i < 8)
-	{
-		octet[i] = (c % 2) + '0';
-		c /= 2;
-		i++;
-	}
-	octet[8] = '\0';
-	return (octet);
-}
-
-void	char_sender(char *octet, int pid)
-{
-	int	j;
-	int	size;
-
-	j = 0;
-	size = 7;
+	i = 7;
 	g_msg_received = 0;
-	if (!octet)
-		exit(EXIT_FAILURE);
-	while (octet[j])
+	while (i >= 0)
 	{
-		if (octet[size -j] == '0')
+		if ((c >> i) & 1)
 		{
-			if (kill(pid, SIGUSR1) == -1)
-			{
-				free(octet);
+			if (kill(pid, SIGUSR2) == -1)
 				exit(EXIT_FAILURE);
-			}
-
 		}
 		else
 		{
-			if (kill(pid, SIGUSR2) == -1)
-			{
-				free(octet);
+			if (kill(pid, SIGUSR1) == -1)
 				exit(EXIT_FAILURE);
-			}
 		}
 		while (!g_msg_received)
 			pause();
-		j++;
+		i--;
 		g_msg_received = 0;
 	}
-	free(octet);
 }
 
 void	test(int signum, siginfo_t *client, void *context)
@@ -87,7 +53,6 @@ int	main(int ac, char **av)
 	int					pid;
 	int					i;
 	char				*str;
-	char				*octet;
 	struct sigaction	sa;
 
 	i = 0;
@@ -109,11 +74,10 @@ int	main(int ac, char **av)
 	{
 		while (str[i])
 		{
-			octet = binaire(str[i]);
-			char_sender(octet, pid);
+			char_sender(str[i], pid);
 			i++;
 		}
-		char_sender(binaire('\n'), pid);
+		char_sender('\n', pid);
 	}
-	char_sender(binaire('\0'), pid);
+	char_sender('\0', pid);
 }

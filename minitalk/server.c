@@ -6,13 +6,13 @@
 /*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 15:26:16 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/10 20:55:48 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/12 18:35:08 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-char *str;
+char *str = 0;
 
 // char	*ft_strjoin(char *s1, char c)
 // {

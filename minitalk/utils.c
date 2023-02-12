@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 18:19:36 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/10 17:43:15 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/12 18:26:56 by alvina           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_atoi(const char *nptr)
 	return (nb);
 }
 
-void	ft_putchar(int c)
+void	ft_putchar(char c)
 {
 	write(1, &c, 1);
 }
