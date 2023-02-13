@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvina <alvina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:55:05 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/11 20:18:00 by alvina           ###   ########.fr       */
+/*   Updated: 2023/02/13 20:35:18 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static int	length(char *str, int *state)
 		return (0);
 	while (str[i])
 	{
-// printf("i = %d, state = %d\n", i, *state);
 		if (*state == 0 && is_separator(&str[i]))
 			return (i);
 		i++;
@@ -147,7 +146,8 @@ void	print_lst(t_token *lst)
 {
 	while (lst)
 	{
-		printf("%s\n", lst->value);
+		printf("%s ", lst->value);
+		printf("%d\n", lst->type);
 		lst = lst->next;
 	}
 }
@@ -177,11 +177,17 @@ t_token	*generator(char **tab)
 	return (head);
 }
 
+int	syntax_error(char **tab)
+{
+	return (0);
+}
+
 int main()
 {
 	char	*str;
 	char **tab;
 	t_token *lst;
+	t_token *head;
 	size_t	size;
 	int i = 0;
 
@@ -197,12 +203,18 @@ int main()
 			free(str);
 			break;
 		}
+		if (syntax_error(tab))
+			return (0);
 		lst = generator(tab);
-		print_lst(lst);
+		head = lst;
+		tokenisation(&lst);
+		print_lst(head);
 		free_tab(tab, i);
 		free(str);
 		ft_putstr_fd("nanoshell> ", 0);
 		str = get_next_line(0, 0);
 	}
 	get_next_line(0, 1);
+	// tokenisation(&lst);
+	// print_lst(lst);
 }

@@ -6,7 +6,7 @@
 /*   By: ale-sain <ale-sain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 16:52:24 by alvina            #+#    #+#             */
-/*   Updated: 2023/02/03 16:44:42 by ale-sain         ###   ########.fr       */
+/*   Updated: 2023/02/13 15:57:38 by ale-sain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,10 @@ int	fdf(t_vars *vars)
 		such_a_quitter(vars, 2);
 	if (vars->width == 1 && vars->leng[0] == 1)
 	{
-		img_pixel_put(&(vars->img), vars->map[0][0].x,
-			vars->map[0][0].y, 0x00FFFFFF);
+		if (vars->map[0][0].x < LENGTH && vars->map[0][0].x > 0
+			&& vars->map[0][0].y < WIDTH && vars->map[0][0].y > 0)
+			img_pixel_put(&(vars->img), vars->map[0][0].x,
+				vars->map[0][0].y, 0x00FFFFFF);
 	}
 	else
 		tracing(*vars, 0, 0);
